@@ -1,30 +1,35 @@
 # Day 3: Crossed Wires
 
+from typing import List, Set
 import AoC
 
-def bread_crumbs(wire):
+def delta_for_dir(dir: str) -> List[int]:
+	delta = [0,0]
+	if dir == 'R':
+		delta = [1,0]
+	elif dir == 'L':
+		delta = [-1,0]
+	elif dir == 'U':
+		delta = [0,1]
+	elif dir == 'D':
+		delta = [0,-1]
+	return delta
+
+def bread_crumbs(wire: List[str]) -> Set[str]:
 	trail = set()
 	loc = [0,0]
 	#trail.add(f'{loc[0]},{loc[1]}') # crosses at 0,0 don't count
 	for run in wire:
 		dir = run[0]
 		length = int(run[1:])
-		delta = [0,0]
-		if dir == 'R':
-			delta = [1,0]
-		elif dir == 'L':
-			delta = [-1,0]
-		elif dir == 'U':
-			delta = [0,1]
-		elif dir == 'D':
-			delta = [0,-1]
+		delta = delta_for_dir(dir)
 		for i in range(0, length):
 			loc[0] += delta[0]
 			loc[1] += delta[1]
 			trail.add(f'{loc[0]},{loc[1]}')
 	return trail
 
-def manhattan_dist(x, y):
+def manhattan_dist(x: int, y: int) -> int:
 	return abs(x) + abs(y)
 
 def main():
