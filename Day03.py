@@ -1,3 +1,5 @@
+# Day 3: Crossed Wires
+
 import AoC
 
 def bread_crumbs(wire):
