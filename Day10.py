@@ -29,8 +29,8 @@ def make_bearing_lookup(size):
 			lookup[dy+size, dx+size] = bearing
 	return lookup
 
-def choose_location(astromap, bearings):
-	np_asteroid_coords = np.where(astromap == 1)
+def get_asteroid_coords(astromap):
+	np_asteroid_coords = np.where(astromap != 0)
 	#print(np_asteroid_coords)
 	#print(np_asteroid_coords[0])
 	asteroid_coords = []
@@ -39,7 +39,10 @@ def choose_location(astromap, bearings):
 		y = np_asteroid_coords[0][i]
 		asteroid_coords.append((x, y))
 		#print(f'Asteroid at x: {x}, y: {y}')
+	return asteroid_coords
 
+def choose_location(astromap, bearings):
+	asteroid_coords = get_asteroid_coords(astromap)
 	size = astromap.shape[0]
 	
 	for a_coord in asteroid_coords:
@@ -62,6 +65,42 @@ def choose_location(astromap, bearings):
 	print(f'Best location is at {max_index_x}, {max_index_y} detecting {max_value}.')
 	return (max_index_x, max_index_y)
 
+
+def vaporize_asteroids(astromap, bearings, loc):
+	asteroid_coords = get_asteroid_coords(astromap)
+	size = astromap.shape[0]
+	firing_order = {}
+	asteroid_count = 0
+	for b_coord in asteroid_coords:
+		dx = b_coord[0] - loc[0]
+		dy = b_coord[1] - loc[1]
+		dist = math.sqrt((dx*dx) + (dy*dy))
+		if dx != 0 or dy != 0:
+			bearing = bearings[dy+size, dx+size]
+			if not bearing in firing_order:
+				firing_order[bearing] = []
+			firing_order[bearing].append((b_coord,dist))
+			asteroid_count += 1
+	all_bearings = sorted(firing_order.keys())
+	for b in all_bearings:
+		# Behind each bearing is a stack sorted by distance, farthest first.
+		# i.e. pop() will return the closest.
+		firing_order[b].sort(key= lambda x: x[1], reverse=True)
+		#print(f'{b}: {firing_order[b]}')
+
+	vaporized = []
+	laser_index = all_bearings.index(-90)
+	while len(vaporized) < asteroid_count:
+		bearing = all_bearings[laser_index]
+		if len(firing_order[bearing]) > 0:
+			coord = firing_order[bearing].pop()
+			vaporized.append(coord[0])
+		laser_index += 1
+		if laser_index >= len(all_bearings):
+			laser_index = 0
+	
+	return vaporized
+
 def main():
 	# [0]: sample with best location (3,4), detecting 8
 	# [1]: sample with best location (5,8), detecting 33
@@ -78,6 +117,14 @@ def main():
 
 	loc = choose_location(astromap, bearings)
 	print(loc)
+
+	vaporized_asteroids = vaporize_asteroids(astromap, bearings, loc)
+	if (len(vaporized_asteroids) >= 200):
+		v = vaporized_asteroids[199]
+		print(f'The 200th asteroid to be vaporized is at {v}')
+		print(f'{v[0]} x 100 + {v[1]} = {v[0] * 100 + v[1]}')
+	else:
+		print('Tested with < 200 asteroids')
 
 if __name__ == '__main__':
 	main()
