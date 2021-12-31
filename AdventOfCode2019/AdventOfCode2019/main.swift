@@ -10,5 +10,5 @@ import Foundation
 print("Advent of Code 2021")
 
 // Day 01
-Tyranny.solve(filename: "01.test")
+//Tyranny.solve(filename: "01.test")
 //Tyranny.solve(filename: "01.challenge")

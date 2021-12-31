@@ -11,7 +11,7 @@ protocol AoCSolution {
 	static func solve(filename: String)
 }
 
-class AOCUtil {
+class AoCUtil {
 	public static func readInputFile(named name:String, removingEmptyLines removeEmpty:Bool) -> [String] {
 		var results = [String]()
 		if let inputPath = Bundle.main.path(forResource: name, ofType: "txt") {
