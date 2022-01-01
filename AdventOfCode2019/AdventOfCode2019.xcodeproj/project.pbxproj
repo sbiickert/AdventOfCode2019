@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37D9F2F627809E99007FB706 /* Day03_CrossedWires.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9F2F527809E99007FB706 /* Day03_CrossedWires.swift */; };
+		37D9F2F727809F3C007FB706 /* 03.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D9F2F327809E76007FB706 /* 03.test.txt */; };
+		37D9F2F827809F3C007FB706 /* 03.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D9F2F427809E87007FB706 /* 03.challenge.txt */; };
 		37F69410277FB0D6006A1504 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6940F277FB0D6006A1504 /* main.swift */; };
 		37F69419277FB126006A1504 /* AoCUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F69418277FB126006A1504 /* AoCUtil.swift */; };
 		37F6941C277FB159006A1504 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 37F6941B277FB159006A1504 /* Algorithms */; };
@@ -28,6 +31,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				37D9F2F727809F3C007FB706 /* 03.test.txt in CopyFiles */,
+				37D9F2F827809F3C007FB706 /* 03.challenge.txt in CopyFiles */,
 				37F6942E277FDC57006A1504 /* 02.test.txt in CopyFiles */,
 				37F6942F277FDC57006A1504 /* 02.challenge.txt in CopyFiles */,
 				37F69428277FB253006A1504 /* 01.test.txt in CopyFiles */,
@@ -38,6 +43,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		37D9F2F327809E76007FB706 /* 03.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = 03.test.txt; path = "AdventOfCode2019/Input Files/03.test.txt"; sourceTree = SOURCE_ROOT; };
+		37D9F2F427809E87007FB706 /* 03.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 03.challenge.txt; sourceTree = "<group>"; };
+		37D9F2F527809E99007FB706 /* Day03_CrossedWires.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day03_CrossedWires.swift; sourceTree = "<group>"; };
 		37F6940C277FB0D6006A1504 /* AdventOfCode2019 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode2019; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F6940F277FB0D6006A1504 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		37F69418277FB126006A1504 /* AoCUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoCUtil.swift; sourceTree = "<group>"; };
@@ -96,6 +104,7 @@
 			children = (
 				37F69424277FB1CB006A1504 /* Day01_Tyranny.swift */,
 				37F6942A277FBA89006A1504 /* Day02_ProgramAlarm.swift */,
+				37D9F2F527809E99007FB706 /* Day03_CrossedWires.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -107,6 +116,8 @@
 				37F69427277FB23D006A1504 /* 01.challenge.txt */,
 				37F6942C277FBA9A006A1504 /* 02.test.txt */,
 				37F6942D277FBAA7006A1504 /* 02.challenge.txt */,
+				37D9F2F327809E76007FB706 /* 03.test.txt */,
+				37D9F2F427809E87007FB706 /* 03.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -183,6 +194,7 @@
 				37F69419277FB126006A1504 /* AoCUtil.swift in Sources */,
 				37F69425277FB1CB006A1504 /* Day01_Tyranny.swift in Sources */,
 				37F6942B277FBA89006A1504 /* Day02_ProgramAlarm.swift in Sources */,
+				37D9F2F627809E99007FB706 /* Day03_CrossedWires.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

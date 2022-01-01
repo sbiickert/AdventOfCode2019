@@ -17,7 +17,10 @@ struct ProgramAlarm: AoCSolution {
 		program[1] = 12
 		program[2] = 2
 		
-		let output = run(program: program)
+		let computer = IntCodeComputer()
+		computer.program = program
+		computer.run()
+		let output = computer.program
 		//print(output)
 		let answer = output[0]
 		
@@ -28,7 +31,9 @@ struct ProgramAlarm: AoCSolution {
 		for (noun, verb) in product(0...99, 0...99) {
 			program[1] = noun
 			program[2] = verb
-			let output = run(program: program)
+			computer.program = program
+			computer.run()
+			let output = computer.program
 			if output[0] == 19690720 {
 				pt2 = 100 * noun + verb
 				break
@@ -44,20 +49,14 @@ struct ProgramAlarm: AoCSolution {
 		print("\nDay 02 TESTS (1202 Program Alarm) -> \(filename)")
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		
+		let computer = IntCodeComputer()
 		for line in input {
-			let output = run(program: line.split(separator: ",").map({Int(String($0))!}))
+			computer.program = line.split(separator: ",").map({Int(String($0))!})
+			computer.run()
+			let output = computer.program
 			print(output)
 		}
 	}
-		
-	private static func run(program: [Int]) -> [Int] {
-		let computer = IntCodeComputer()
-		computer.program = program
-		computer.run()
-		return computer.program
-	}
-	
-	
 }
 
 class IntCodeComputer {
@@ -80,14 +79,14 @@ class IntCodeComputer {
 				let o1 = program[ptr+3]
 				let result = i1 + i2
 				program[o1] = result
-				ptr += 4
+				ptr += op.size
 			case .mul:
 				let i1 = program[program[ptr+1]]
 				let i2 = program[program[ptr+2]]
 				let o1 = program[ptr+3]
 				let result = i1 * i2
 				program[o1] = result
-				ptr += 4
+				ptr += op.size
 			}
 		}
 	}
@@ -96,5 +95,14 @@ class IntCodeComputer {
 		case exit = 99
 		case add = 1
 		case mul = 2
+		
+		var size: Int {
+			switch self {
+			case .exit:
+				return 0
+			default:
+				return 4
+			}
+		}
 	}
 }
