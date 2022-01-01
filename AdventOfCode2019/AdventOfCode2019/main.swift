@@ -18,5 +18,5 @@ print("Advent of Code 2021")
 //ProgramAlarm.solve(filename: "02.challenge")
 
 // Day 03
-CrossedWires.runTests(filename: "03.test")
+//CrossedWires.runTests(filename: "03.test")
 //CrossedWires.solve(filename: "03.challenge")

@@ -6,19 +6,28 @@
 //
 
 import Foundation
+import Algorithms
 
 struct CrossedWires: AoCSolution {
 	static func runTests(filename: String) {
-		print("\nDay 02 TESTS (1202 Program Alarm) -> \(filename)")
+		print("\nDay 03 TESTS (1202 Program Alarm) -> \(filename)")
 		let groupedInput = AoCUtil.readGroupedInputFile(named: filename)
 		
 		for input in groupedInput {
 			let wire0 = Wire(defn: input[0])
 			let wire1 = Wire(defn: input[1])
-			let commonCoords = Array(Set<Coord2D>(wire0.coords).intersection(Set<Coord2D>(wire1.coords)))
+			let manhattanSorted = Array(Set<Coord2D>(wire0.coords).intersection(Set<Coord2D>(wire1.coords)))
 				.sorted(by: {$0.manhattan < $1.manhattan}).dropFirst() //first is 0,0
-			let closest = commonCoords.first!
-			print("\(closest): \(closest.manhattan)")
+			let closest = manhattanSorted.first!
+			print("Manhattan \(closest): \(closest.manhattan)")
+
+			var minSignalDistance = Int.max
+			for coord in manhattanSorted {
+				let s0 = wire0.signalDistance(to: coord)
+				let s1 = wire1.signalDistance(to: coord)
+				minSignalDistance = min(minSignalDistance, (s0+s1))
+			}
+			print("Signal: \(minSignalDistance)")
 		}
 	}
 	
@@ -29,12 +38,21 @@ struct CrossedWires: AoCSolution {
 		let wire0 = Wire(defn: input[0])
 		let wire1 = Wire(defn: input[1])
 		let commonCoords = Array(Set<Coord2D>(wire0.coords).intersection(Set<Coord2D>(wire1.coords)))
-			.sorted(by: {$0.manhattan < $1.manhattan}).dropFirst() //first is 0,0
-		let closest = commonCoords.first!
+		let manhattanSorted = commonCoords.sorted(by: {$0.manhattan < $1.manhattan}).dropFirst() //first is 0,0
+		let closest = manhattanSorted.first!
 		
 		print("Part 1")
 		print("The Manhattan distance is: \(closest.manhattan)")
 
+		var minSignalDistance = Int.max
+		for coord in manhattanSorted {
+			let s0 = wire0.signalDistance(to: coord)
+			let s1 = wire1.signalDistance(to: coord)
+			minSignalDistance = min(minSignalDistance, (s0+s1))
+		}
+		
+		print("Part 2")
+		print("The signal distance is: \(minSignalDistance)")
 	}
 	
 	
@@ -56,6 +74,11 @@ struct CrossedWires: AoCSolution {
 				}
 			}
 			coords = path
+		}
+		
+		func signalDistance(to coord: Coord2D) -> Int {
+			let d = coords.firstIndex(of: coord)!
+			return d
 		}
 	}
 	
