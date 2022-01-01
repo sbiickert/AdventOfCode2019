@@ -16,6 +16,9 @@
 		37F69425277FB1CB006A1504 /* Day01_Tyranny.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F69424277FB1CB006A1504 /* Day01_Tyranny.swift */; };
 		37F69428277FB253006A1504 /* 01.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F69426277FB233006A1504 /* 01.test.txt */; };
 		37F69429277FB253006A1504 /* 01.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F69427277FB23D006A1504 /* 01.challenge.txt */; };
+		37F6942B277FBA89006A1504 /* Day02_ProgramAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6942A277FBA89006A1504 /* Day02_ProgramAlarm.swift */; };
+		37F6942E277FDC57006A1504 /* 02.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F6942C277FBA9A006A1504 /* 02.test.txt */; };
+		37F6942F277FDC57006A1504 /* 02.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F6942D277FBAA7006A1504 /* 02.challenge.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				37F6942E277FDC57006A1504 /* 02.test.txt in CopyFiles */,
+				37F6942F277FDC57006A1504 /* 02.challenge.txt in CopyFiles */,
 				37F69428277FB253006A1504 /* 01.test.txt in CopyFiles */,
 				37F69429277FB253006A1504 /* 01.challenge.txt in CopyFiles */,
 			);
@@ -39,6 +44,9 @@
 		37F69424277FB1CB006A1504 /* Day01_Tyranny.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day01_Tyranny.swift; sourceTree = "<group>"; };
 		37F69426277FB233006A1504 /* 01.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 01.test.txt; sourceTree = "<group>"; };
 		37F69427277FB23D006A1504 /* 01.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 01.challenge.txt; sourceTree = "<group>"; };
+		37F6942A277FBA89006A1504 /* Day02_ProgramAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day02_ProgramAlarm.swift; sourceTree = "<group>"; };
+		37F6942C277FBA9A006A1504 /* 02.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 02.test.txt; sourceTree = "<group>"; };
+		37F6942D277FBAA7006A1504 /* 02.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 02.challenge.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				37F69424277FB1CB006A1504 /* Day01_Tyranny.swift */,
+				37F6942A277FBA89006A1504 /* Day02_ProgramAlarm.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -96,6 +105,8 @@
 			children = (
 				37F69426277FB233006A1504 /* 01.test.txt */,
 				37F69427277FB23D006A1504 /* 01.challenge.txt */,
+				37F6942C277FBA9A006A1504 /* 02.test.txt */,
+				37F6942D277FBAA7006A1504 /* 02.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -171,6 +182,7 @@
 				37F69410277FB0D6006A1504 /* main.swift in Sources */,
 				37F69419277FB126006A1504 /* AoCUtil.swift in Sources */,
 				37F69425277FB1CB006A1504 /* Day01_Tyranny.swift in Sources */,
+				37F6942B277FBA89006A1504 /* Day02_ProgramAlarm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
