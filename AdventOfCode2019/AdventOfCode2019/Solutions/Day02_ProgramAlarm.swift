@@ -57,51 +57,51 @@ struct ProgramAlarm: AoCSolution {
 			print(output)
 		}
 	}
-}
 
-class IntCodeComputer {
-	var program = [Int]()
-	init() {}
-	
-	func run() {
-		var ptr = 0
+	class IntCodeComputer {
+		var program = [Int]()
+		init() {}
 		
-		var bExit = false
-		
-		while !bExit {
-			let op = OpCode(rawValue: program[ptr])!
-			switch op {
-			case .exit:
-				bExit = true
-			case .add:
-				let i1 = program[program[ptr+1]]
-				let i2 = program[program[ptr+2]]
-				let o1 = program[ptr+3]
-				let result = i1 + i2
-				program[o1] = result
-				ptr += op.size
-			case .mul:
-				let i1 = program[program[ptr+1]]
-				let i2 = program[program[ptr+2]]
-				let o1 = program[ptr+3]
-				let result = i1 * i2
-				program[o1] = result
-				ptr += op.size
+		func run() {
+			var ptr = 0
+			
+			var bExit = false
+			
+			while !bExit {
+				let op = OpCode(rawValue: program[ptr])!
+				switch op {
+				case .exit:
+					bExit = true
+				case .add:
+					let i1 = program[program[ptr+1]]
+					let i2 = program[program[ptr+2]]
+					let o1 = program[ptr+3]
+					let result = i1 + i2
+					program[o1] = result
+					ptr += op.size
+				case .mul:
+					let i1 = program[program[ptr+1]]
+					let i2 = program[program[ptr+2]]
+					let o1 = program[ptr+3]
+					let result = i1 * i2
+					program[o1] = result
+					ptr += op.size
+				}
 			}
 		}
-	}
-	
-	enum OpCode: Int {
-		case exit = 99
-		case add = 1
-		case mul = 2
 		
-		var size: Int {
-			switch self {
-			case .exit:
-				return 0
-			default:
-				return 4
+		enum OpCode: Int {
+			case exit = 99
+			case add = 1
+			case mul = 2
+			
+			var size: Int {
+				switch self {
+				case .exit:
+					return 0
+				default:
+					return 4
+				}
 			}
 		}
 	}
