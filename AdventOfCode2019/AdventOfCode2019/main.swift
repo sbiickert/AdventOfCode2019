@@ -20,3 +20,8 @@ print("Advent of Code 2021")
 // Day 03
 //CrossedWires.runTests(filename: "03.test")
 //CrossedWires.solve(filename: "03.challenge")
+
+// Day 04
+//SecureContainer.solve()
+
+// Day 05
