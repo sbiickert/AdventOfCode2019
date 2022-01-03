@@ -34,4 +34,8 @@ print("Advent of Code 2021")
 
 // Day 07
 //AmplificationCircuit.runTests(filename: "07.test")
-AmplificationCircuit.solve(filename: "07.challenge")
+//AmplificationCircuit.solve(filename: "07.challenge")
+
+// Day 08
+//SpaceImageFormat.runTests(filename: "08.test")
+SpaceImageFormat.solve(filename: "08.challenge")
