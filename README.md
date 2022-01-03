@@ -6,6 +6,10 @@ Better late than never
 
 I am going to try to work through the 2019 Advent of Code (https://adventofcode.com/2019) in Python, using Pythonista (http://omz-software.com/pythonista/) on my iPad Air 4 with Magic Keyboard.
 
+*Updated*
+
+I have started re-doing 2019 in Swift in Xcode.
+
 ## Thoughts 3 Days In
 
 This rocks. I've used an iPad daily for more than seven years, but until now I never coded on it. It's something I never knew was missing until it was there. Pythonista is not perfect. So far, my main gripes are:
@@ -24,3 +28,7 @@ Advent of Code 2019 is a very different beast from 2020. That's not to say that 
 Today's challenge was a lot like the shuttle bus one from 2020, but even knowing that solution, my code still felt brute-force as it chewed its way to the 400+ trillion final answer. I'm sure writing it in Swift or C++ or Rust would have made it 100 times faster, but I stuck with Python.
 
 I'm doing some on the iPad and some on the Mac in Visual Studio Code. They are different, but each has their strengths. If the Pythonista code editor was as good as the VS Code one, it would be 🔥.
+
+### Thoughts on Doing This in Xcode
+
+I'd say this is night and day. I've plowed through 8 days very quickly and the IntCode computer isn't giving me fits at all. Having fun!
