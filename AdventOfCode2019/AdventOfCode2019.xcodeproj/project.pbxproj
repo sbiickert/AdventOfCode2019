@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3761EE9E27834AD700A8141E /* 06.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3761EE9C278349B400A8141E /* 06.test.txt */; };
+		3761EE9F27834AD700A8141E /* 06.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3761EE9D278349C500A8141E /* 06.challenge.txt */; };
+		3761EEA127834B0700A8141E /* Day06_UniversalOrbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */; };
 		377ECBEC278141BF00D12F72 /* Day04_SecureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377ECBEB278141BF00D12F72 /* Day04_SecureContainer.swift */; };
 		37D46B3F2782598B00C9B177 /* 05.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D46B3E2782598100C9B177 /* 05.test.txt */; };
 		37D46B402782598B00C9B177 /* 05.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D46B3D2782597100C9B177 /* 05.challenge.txt */; };
@@ -35,6 +38,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				3761EE9E27834AD700A8141E /* 06.test.txt in CopyFiles */,
+				3761EE9F27834AD700A8141E /* 06.challenge.txt in CopyFiles */,
 				37D46B3F2782598B00C9B177 /* 05.test.txt in CopyFiles */,
 				37D46B402782598B00C9B177 /* 05.challenge.txt in CopyFiles */,
 				37D9F2F727809F3C007FB706 /* 03.test.txt in CopyFiles */,
@@ -49,6 +54,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3761EE9C278349B400A8141E /* 06.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 06.test.txt; sourceTree = "<group>"; };
+		3761EE9D278349C500A8141E /* 06.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 06.challenge.txt; sourceTree = "<group>"; };
+		3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day06_UniversalOrbit.swift; sourceTree = "<group>"; };
 		377ECBEB278141BF00D12F72 /* Day04_SecureContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day04_SecureContainer.swift; sourceTree = "<group>"; };
 		37D46B3D2782597100C9B177 /* 05.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 05.challenge.txt; sourceTree = "<group>"; };
 		37D46B3E2782598100C9B177 /* 05.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 05.test.txt; sourceTree = "<group>"; };
@@ -117,6 +125,7 @@
 				37D9F2F527809E99007FB706 /* Day03_CrossedWires.swift */,
 				377ECBEB278141BF00D12F72 /* Day04_SecureContainer.swift */,
 				37D46B41278259A300C9B177 /* Day05_SunnyAsteroids.swift */,
+				3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -132,6 +141,8 @@
 				37D9F2F427809E87007FB706 /* 03.challenge.txt */,
 				37D46B3E2782598100C9B177 /* 05.test.txt */,
 				37D46B3D2782597100C9B177 /* 05.challenge.txt */,
+				3761EE9C278349B400A8141E /* 06.test.txt */,
+				3761EE9D278349C500A8141E /* 06.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -205,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37D46B42278259A300C9B177 /* Day05_SunnyAsteroids.swift in Sources */,
+				3761EEA127834B0700A8141E /* Day06_UniversalOrbit.swift in Sources */,
 				37F69410277FB0D6006A1504 /* main.swift in Sources */,
 				37F69419277FB126006A1504 /* AoCUtil.swift in Sources */,
 				37F69425277FB1CB006A1504 /* Day01_Tyranny.swift in Sources */,
