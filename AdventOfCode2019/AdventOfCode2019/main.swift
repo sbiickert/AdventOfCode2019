@@ -30,4 +30,8 @@ print("Advent of Code 2021")
 
 // Day 06
 //UniversalOrbit.solve(filename: "06.test")
-UniversalOrbit.solve(filename: "06.challenge")
+//UniversalOrbit.solve(filename: "06.challenge")
+
+// Day 07
+//AmplificationCircuit.runTests(filename: "07.test")
+AmplificationCircuit.solve(filename: "07.challenge")
