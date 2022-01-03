@@ -29,5 +29,5 @@ print("Advent of Code 2021")
 //SunnyAsteroids.solve(filename: "05.challenge")
 
 // Day 06
-UniversalOrbit.solve(filename: "06.test")
-//UniversalOrbit.solve(filename: "06.challenge")
+//UniversalOrbit.solve(filename: "06.test")
+UniversalOrbit.solve(filename: "06.challenge")
