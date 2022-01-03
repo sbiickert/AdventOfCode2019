@@ -17,7 +17,14 @@ struct SunnyAsteroids: AoCSolution {
 		computer.program = program
 		computer.input.append(1)
 		computer.run()
+		print("Part One")
 		print("IntCode output: \(computer.output)")
+		
+		computer.program = program
+		computer.input.append(5)
+		computer.run()
+		print("Part Two")
+		print("The thermal radiator diagnostic code: \(computer.output[0])")
 	}
 	
 	static func runTests(filename: String) {
@@ -37,14 +44,93 @@ struct SunnyAsteroids: AoCSolution {
 		computer.program = program
 		computer.input.append(69)
 		computer.run()
-		print(computer.output[0])
-		
+		print("69 went in, what comes out? \(computer.output[0])")
+
 		// Add negative number
 		program = input[2].split(separator: ",").map({Int(String($0))!})
 		computer.program = program
 		computer.run()
 		print(computer.program)
 
+		// Input == 8
+		program = input[3].split(separator: ",").map({Int(String($0))!})
+		computer.program = program
+		computer.input.append(8)
+		computer.run()
+		print("is 8 equal to 8? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(9)
+		computer.run()
+		print("is 9 equal to 8? \(computer.output[0])")
+
+		// Input < 8
+		program = input[4].split(separator: ",").map({Int(String($0))!})
+		computer.program = program
+		computer.input.append(7)
+		computer.run()
+		print("is 7 less than 8? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(8)
+		computer.run()
+		print("is 8 less than 8? \(computer.output[0])")
+
+		// Input == 8
+		program = input[5].split(separator: ",").map({Int(String($0))!})
+		computer.program = program
+		computer.input.append(8)
+		computer.run()
+		print("is 8 equal to 8? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(9)
+		computer.run()
+		print("is 9 equal to 8? \(computer.output[0])")
+
+		// Input < 8
+		program = input[6].split(separator: ",").map({Int(String($0))!})
+		computer.program = program
+		computer.input.append(7)
+		computer.run()
+		print("is 7 less than 8? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(8)
+		computer.run()
+		print("is 8 less than 8? \(computer.output[0])")
+
+		// Input non-zero
+		program = input[7].split(separator: ",").map({Int(String($0))!})
+		computer.program = program
+		computer.input.append(7)
+		computer.run()
+		print("is 7 non-zero? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(0)
+		computer.run()
+		print("is 0 non-zero? \(computer.output[0])")
+
+		program = input[8].split(separator: ",").map({Int(String($0))!})
+		computer.program = program
+		computer.input.append(7)
+		computer.run()
+		print("is 7 non-zero? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(0)
+		computer.run()
+		print("is 0 non-zero? \(computer.output[0])")
+
+		// Less than, equal to or greater than 8
+		program = input[9].split(separator: ",").map({Int(String($0))!})
+		computer.program = program
+		computer.input.append(7)
+		computer.run()
+		print("is 7 less than 8? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(8)
+		computer.run()
+		print("is 8 equal to 8? \(computer.output[0])")
+		computer.program = program
+		computer.input.append(9)
+		computer.run()
+		print("is 9 greater than 8? \(computer.output[0])")
 	}
 	
 	class IntCodeComputer {
@@ -57,6 +143,7 @@ struct SunnyAsteroids: AoCSolution {
 		
 		func run() {
 			var ptr = 0
+			output.removeAll()
 			
 			var bExit = false
 			
@@ -71,20 +158,49 @@ struct SunnyAsteroids: AoCSolution {
 					let result = p[1] + p[2]
 					let o = program[ptr+3]
 					program[o] = result
+					ptr += instr.op.size
 				case .mul:
 					let p = readParams(count: 2)
 					let result = p[1] * p[2]
 					let o = program[ptr+3]
 					program[o] = result
+					ptr += instr.op.size
 				case .inp:
 					let i1 = input.removeFirst()
 					let o = program[ptr+1]
 					program[o] = i1
+					ptr += instr.op.size
 				case .out:
 					let p = readParams(count: 1)
 					output.append(p[1])
+					ptr += instr.op.size
+				case .jmpT:
+					let p = readParams(count: 2)
+					if p[1] != 0 {
+						ptr = p[2]
+					}
+					else {
+						ptr += instr.op.size
+					}
+				case .jmpF:
+					let p = readParams(count: 2)
+					if p[1] == 0 {
+						ptr = p[2]
+					}
+					else {
+						ptr += instr.op.size
+					}
+				case .lt:
+					let p = readParams(count: 2)
+					let o = program[ptr+3]
+					program[o] = (p[1] < p[2]) ? 1 : 0
+					ptr += instr.op.size
+				case .eq:
+					let p = readParams(count: 2)
+					let o = program[ptr+3]
+					program[o] = (p[1] == p[2]) ? 1 : 0
+					ptr += instr.op.size
 				}
-				ptr += instr.op.size
 				
 				func readParams(count: Int) -> [Int] {
 					// Get the parameters
@@ -138,6 +254,10 @@ struct SunnyAsteroids: AoCSolution {
 			case mul = 2
 			case inp = 3
 			case out = 4
+			case jmpT = 5
+			case jmpF = 6
+			case lt = 7
+			case eq = 8
 			
 			var size: Int {
 				switch self {
@@ -145,6 +265,8 @@ struct SunnyAsteroids: AoCSolution {
 					return 1
 				case .inp, .out:
 					return 2
+				case .jmpT, .jmpF:
+					return 3
 				default:
 					return 4
 				}
