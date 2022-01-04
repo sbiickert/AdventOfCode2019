@@ -38,4 +38,8 @@ print("Advent of Code 2021")
 
 // Day 08
 //SpaceImageFormat.runTests(filename: "08.test")
-SpaceImageFormat.solve(filename: "08.challenge")
+//SpaceImageFormat.solve(filename: "08.challenge")
+
+// Day 09
+//SensorBoost.runTests(filename: "09.test")
+//SensorBoost.solve(filename: "09.challenge")

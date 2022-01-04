@@ -23,6 +23,9 @@
 		37D9F2F627809E99007FB706 /* Day03_CrossedWires.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9F2F527809E99007FB706 /* Day03_CrossedWires.swift */; };
 		37D9F2F727809F3C007FB706 /* 03.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D9F2F327809E76007FB706 /* 03.test.txt */; };
 		37D9F2F827809F3C007FB706 /* 03.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D9F2F427809E87007FB706 /* 03.challenge.txt */; };
+		37E7DB0D27849D87006758A8 /* Day09_SensorBoost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E7DB0C27849D87006758A8 /* Day09_SensorBoost.swift */; };
+		37E7DB1027849E1B006758A8 /* 09.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37E7DB0E27849D95006758A8 /* 09.test.txt */; };
+		37E7DB1127849E1B006758A8 /* 09.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37E7DB0F27849DA0006758A8 /* 09.challenge.txt */; };
 		37F69410277FB0D6006A1504 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6940F277FB0D6006A1504 /* main.swift */; };
 		37F69419277FB126006A1504 /* AoCUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F69418277FB126006A1504 /* AoCUtil.swift */; };
 		37F6941C277FB159006A1504 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 37F6941B277FB159006A1504 /* Algorithms */; };
@@ -44,6 +47,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				37E7DB1027849E1B006758A8 /* 09.test.txt in CopyFiles */,
+				37E7DB1127849E1B006758A8 /* 09.challenge.txt in CopyFiles */,
 				37C2D988278395F30043B21F /* 08.test.txt in CopyFiles */,
 				37C2D989278395F30043B21F /* 08.challenge.txt in CopyFiles */,
 				3761EEA62783562100A8141E /* 07.test.txt in CopyFiles */,
@@ -80,6 +85,9 @@
 		37D9F2F327809E76007FB706 /* 03.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = 03.test.txt; path = "AdventOfCode2019/Input Files/03.test.txt"; sourceTree = SOURCE_ROOT; };
 		37D9F2F427809E87007FB706 /* 03.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 03.challenge.txt; sourceTree = "<group>"; };
 		37D9F2F527809E99007FB706 /* Day03_CrossedWires.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day03_CrossedWires.swift; sourceTree = "<group>"; };
+		37E7DB0C27849D87006758A8 /* Day09_SensorBoost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day09_SensorBoost.swift; sourceTree = "<group>"; };
+		37E7DB0E27849D95006758A8 /* 09.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 09.test.txt; sourceTree = "<group>"; };
+		37E7DB0F27849DA0006758A8 /* 09.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 09.challenge.txt; sourceTree = "<group>"; };
 		37F6940C277FB0D6006A1504 /* AdventOfCode2019 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode2019; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F6940F277FB0D6006A1504 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		37F69418277FB126006A1504 /* AoCUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoCUtil.swift; sourceTree = "<group>"; };
@@ -144,6 +152,7 @@
 				3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */,
 				3761EEA2278355F100A8141E /* Day07_AmplificationCircuit.swift */,
 				37C2D9842783927D0043B21F /* Day08_SpaceImageFormat.swift */,
+				37E7DB0C27849D87006758A8 /* Day09_SensorBoost.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -165,6 +174,8 @@
 				3761EEA52783561100A8141E /* 07.challenge.txt */,
 				37C2D986278392DE0043B21F /* 08.test.txt */,
 				37C2D987278393080043B21F /* 08.challenge.txt */,
+				37E7DB0E27849D95006758A8 /* 09.test.txt */,
+				37E7DB0F27849DA0006758A8 /* 09.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -244,6 +255,7 @@
 				37C2D9852783927D0043B21F /* Day08_SpaceImageFormat.swift in Sources */,
 				37F69419277FB126006A1504 /* AoCUtil.swift in Sources */,
 				37F69425277FB1CB006A1504 /* Day01_Tyranny.swift in Sources */,
+				37E7DB0D27849D87006758A8 /* Day09_SensorBoost.swift in Sources */,
 				377ECBEC278141BF00D12F72 /* Day04_SecureContainer.swift in Sources */,
 				37F6942B277FBA89006A1504 /* Day02_ProgramAlarm.swift in Sources */,
 				37D9F2F627809E99007FB706 /* Day03_CrossedWires.swift in Sources */,
