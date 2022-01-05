@@ -14,12 +14,18 @@ struct MonitoringStation: AoCSolution {
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		
 		let astroMap = Map(input: input)
-		astroMap.draw()
+		//astroMap.draw()
 		let bestLocation = findBestLocation(in: astroMap)
 		//print(bestLocation)
 		
 		print("Part One")
 		print("The best location is \(bestLocation.0) and can see \(bestLocation.1) other asteroids.")
+
+		let result = vaporizeAsteroids(from: bestLocation.0, inMap: astroMap)
+		
+		print("Part Two")
+		print("The 200th asteroid score is \(result)")
+
 	}
 	
 	static func runTests(filename: String) {
@@ -36,20 +42,84 @@ struct MonitoringStation: AoCSolution {
 		// Vaporization
 		let input = groupedInput[4]
 		let astroMap = Map(input: input)
+		astroMap.draw()
 		let laser = Coord2D(x: 11, y: 13)
+		let result = vaporizeAsteroids(from: laser, inMap: astroMap)
+		
+		
 	}
 	
 	static func findBestLocation(in astroMap: Map) -> (Coord2D, Int) {
 		var result: Coord2D?
 		var maxVisible = 0
 		for candidate in astroMap.asteroidLocations {
-			let losData = astroMap.analyzeLineOfSight(from: candidate)
+			let losData = analyzeLineOfSight(from: candidate, inMap: astroMap)
 			if losData.count > maxVisible {
 				maxVisible = losData.count
 				result = candidate
 			}
 		}
 		return (result!, maxVisible)
+	}
+	
+	static func analyzeLineOfSight(from location: Coord2D, inMap astroMap:Map) -> Dictionary<Int, Int> {
+		var result = Dictionary<Int, Int>()
+		for other in astroMap.asteroidLocations {
+			if location != other {
+				let diff = location - other
+				let bearing = astroMap.bearingLookup[diff]!
+				if result.keys.contains(bearing) == false {
+					result[bearing] = 0
+				}
+				result[bearing]! += 1
+			}
+		}
+		return result
+	}
+	
+	static func vaporizeAsteroids(from laser: Coord2D, inMap astroMap: Map) -> Int {
+		var result = 0
+		var asteroids = collectAsteroidsByBearing(from: laser, inMap: astroMap)
+		let bearings = [Int](asteroids.keys.sorted())
+		var vaporizedCount = 0
+		var idx = bearings.firstIndex(of: 90000)! // up
+		while true {
+			let b = bearings[idx]
+			if asteroids[b]!.count > 0 {
+				let vaporized = asteroids[b]!.first!
+				asteroids[b]! = Array(asteroids[b]!.dropFirst())
+				vaporizedCount += 1
+				//print("\(vaporizedCount): Asteroid at \(vaporized)")
+				if vaporizedCount >= 200 {
+					result = vaporized.x * 100 + vaporized.y
+					break
+				}
+			}
+			
+			idx += 1
+			if idx >= bearings.count {
+				idx = 0
+			}
+		}
+		return result
+	}
+	
+	static func collectAsteroidsByBearing(from location: Coord2D, inMap astroMap: Map) -> Dictionary<Int, [Coord2D]> {
+		var result = Dictionary<Int, [Coord2D]>()
+		for other in astroMap.asteroidLocations {
+			if location != other {
+				let diff = location - other
+				let bearing = astroMap.bearingLookup[diff]!
+				if result.keys.contains(bearing) == false {
+					result[bearing] = [Coord2D]()
+				}
+				result[bearing]!.append(other)
+			}
+		}
+		for key in result.keys {
+			result[key] = result[key]!.sorted(by: {$0.distanceFrom(location) < $1.distanceFrom(location)})
+		}
+		return result
 	}
 
 	class Map {
@@ -92,25 +162,10 @@ struct MonitoringStation: AoCSolution {
 		}
 		
 		func draw() {
-			for row in data {
-				print(row.map({$0 ? "#" : "."}).joined())
+			print("    \((0..<size).map({String(format: "%1d", $0 % 10)}).joined())")
+			for (x, row) in data.enumerated() {
+				print(String(format: "%2d: ", x) + row.map({$0 ? "#" : "."}).joined())
 			}
-		}
-		
-		func analyzeLineOfSight(from location: Coord2D) -> Dictionary<Int, Int> {
-			var result = Dictionary<Int, Int>()
-			for other in asteroidLocations {
-				if location != other {
-					let diff = location - other
-					let bearing = bearingLookup[diff]!
-					if result.keys.contains(bearing) == false {
-						result[bearing] = 0
-					}
-					result[bearing]! += 1
-				}
-			}
-			
-			return result
 		}
 	}
 	
@@ -125,6 +180,11 @@ struct MonitoringStation: AoCSolution {
 		var angle: Int {
 			let sth = atan2(Double(y), Double(y)) * 1000000
 			return Int(sth)
+		}
+		
+		func distanceFrom(_ other: Coord2D) -> Double {
+			let diff = self-other
+			return sqrt(Double(diff.x * diff.x + diff.y * diff.y))
 		}
 	}
 }
