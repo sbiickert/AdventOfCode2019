@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		374536282786393C000168AF /* Day11_SpacePolice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374536272786393C000168AF /* Day11_SpacePolice.swift */; };
+		3745362B27863BC3000168AF /* IntCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745362A27863BC3000168AF /* IntCode.swift */; };
+		3745362C27865B9B000168AF /* 11.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 374536292786399A000168AF /* 11.challenge.txt */; };
 		3761EE9E27834AD700A8141E /* 06.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3761EE9C278349B400A8141E /* 06.test.txt */; };
 		3761EE9F27834AD700A8141E /* 06.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3761EE9D278349C500A8141E /* 06.challenge.txt */; };
 		3761EEA127834B0700A8141E /* Day06_UniversalOrbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */; };
@@ -50,6 +53,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				3745362C27865B9B000168AF /* 11.challenge.txt in CopyFiles */,
 				37FF784227852B2600EDF372 /* 10.test.txt in CopyFiles */,
 				37FF784327852B2600EDF372 /* 10.challenge.txt in CopyFiles */,
 				37E7DB1027849E1B006758A8 /* 09.test.txt in CopyFiles */,
@@ -74,6 +78,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		374536272786393C000168AF /* Day11_SpacePolice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day11_SpacePolice.swift; sourceTree = "<group>"; };
+		374536292786399A000168AF /* 11.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 11.challenge.txt; sourceTree = "<group>"; };
+		3745362A27863BC3000168AF /* IntCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntCode.swift; sourceTree = "<group>"; };
 		3761EE9C278349B400A8141E /* 06.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 06.test.txt; sourceTree = "<group>"; };
 		3761EE9D278349C500A8141E /* 06.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 06.challenge.txt; sourceTree = "<group>"; };
 		3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day06_UniversalOrbit.swift; sourceTree = "<group>"; };
@@ -162,6 +169,8 @@
 				37C2D9842783927D0043B21F /* Day08_SpaceImageFormat.swift */,
 				37E7DB0C27849D87006758A8 /* Day09_SensorBoost.swift */,
 				37FF783E2785291B00EDF372 /* Day10_MonitoringStation.swift */,
+				374536272786393C000168AF /* Day11_SpacePolice.swift */,
+				3745362A27863BC3000168AF /* IntCode.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -187,6 +196,7 @@
 				37E7DB0F27849DA0006758A8 /* 09.challenge.txt */,
 				37FF784027852A3900EDF372 /* 10.test.txt */,
 				37FF784127852A6400EDF372 /* 10.challenge.txt */,
+				374536292786399A000168AF /* 11.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -265,11 +275,13 @@
 				37F69410277FB0D6006A1504 /* main.swift in Sources */,
 				37C2D9852783927D0043B21F /* Day08_SpaceImageFormat.swift in Sources */,
 				37F69419277FB126006A1504 /* AoCUtil.swift in Sources */,
+				3745362B27863BC3000168AF /* IntCode.swift in Sources */,
 				37F69425277FB1CB006A1504 /* Day01_Tyranny.swift in Sources */,
 				37E7DB0D27849D87006758A8 /* Day09_SensorBoost.swift in Sources */,
 				377ECBEC278141BF00D12F72 /* Day04_SecureContainer.swift in Sources */,
 				37F6942B277FBA89006A1504 /* Day02_ProgramAlarm.swift in Sources */,
 				37FF783F2785291B00EDF372 /* Day10_MonitoringStation.swift in Sources */,
+				374536282786393C000168AF /* Day11_SpacePolice.swift in Sources */,
 				37D9F2F627809E99007FB706 /* Day03_CrossedWires.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

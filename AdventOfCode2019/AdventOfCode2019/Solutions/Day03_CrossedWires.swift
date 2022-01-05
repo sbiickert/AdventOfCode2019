@@ -68,7 +68,7 @@ struct CrossedWires: AoCSolution {
 			for step in steps {
 				let dir = Direction2D(rawValue: String(step.first!))!
 				let dist = Int(step.dropFirst())!
-				for i in 0..<dist {
+				for _ in 0..<dist {
 					pos = pos + dir.offset
 					path.append(pos)
 				}

@@ -41,7 +41,7 @@ struct UniversalOrbit: AoCSolution {
 		let commonParents = Array(Set<Body>(yourParents).intersection(Set<Body>(santasParents))).sorted(by: {$0.countOrbits() < $1.countOrbits()})
 		let commonParent = commonParents.last!
 		//print("Common parent: \(commonParent.label)")
-		var transferCount = yourParents.firstIndex(of: commonParent)! + santasParents.firstIndex(of: commonParent)!
+		let transferCount = yourParents.firstIndex(of: commonParent)! + santasParents.firstIndex(of: commonParent)!
 		
 		print("Part Two")
 		print("The total number of transfers to reach Santa is \(transferCount)")

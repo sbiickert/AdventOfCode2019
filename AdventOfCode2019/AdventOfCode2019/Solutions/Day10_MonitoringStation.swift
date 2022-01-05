@@ -32,19 +32,19 @@ struct MonitoringStation: AoCSolution {
 		print("\nDay 10 TEST (Monitoring Station) -> \(filename)")
 		let groupedInput = AoCUtil.readGroupedInputFile(named: filename)
 		
-//		for input in groupedInput {
-//			let astroMap = Map(input: input)
-//			astroMap.draw()
-//			let bestLocation = findBestLocation(in: astroMap)
-//			print(bestLocation)
-//		}
+		for input in groupedInput {
+			let astroMap = Map(input: input)
+			astroMap.draw()
+			let bestLocation = findBestLocation(in: astroMap)
+			print(bestLocation)
+		}
 		
 		// Vaporization
 		let input = groupedInput[4]
 		let astroMap = Map(input: input)
 		astroMap.draw()
 		let laser = Coord2D(x: 11, y: 13)
-		let result = vaporizeAsteroids(from: laser, inMap: astroMap)
+		let _ = vaporizeAsteroids(from: laser, inMap: astroMap)
 		
 		
 	}

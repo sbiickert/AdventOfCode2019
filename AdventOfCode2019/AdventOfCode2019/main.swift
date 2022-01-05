@@ -46,4 +46,7 @@ print("Advent of Code 2021")
 
 // Day 10
 //MonitoringStation.runTests(filename: "10.test")
-MonitoringStation.solve(filename: "10.challenge")
+//MonitoringStation.solve(filename: "10.challenge")
+
+// Day 11
+SpacePolice.solve(filename: "11.challenge")

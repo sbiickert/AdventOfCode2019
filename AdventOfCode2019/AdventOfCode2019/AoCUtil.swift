@@ -65,3 +65,85 @@ class AoCUtil {
 		return result
 	}
 }
+
+struct Coord2D: Hashable {
+	static var zero: Coord2D {
+		return Coord2D(x: 0, y: 0)
+	}
+	
+	let x: Int
+	let y: Int
+	
+	static func +(left: Coord2D, right: Coord2D) -> Coord2D {
+		let sum = Coord2D(x: left.x + right.x, y: left.y + right.y)
+		return sum
+	}
+	
+	static func -(lhs: Coord2D, rhs: Coord2D) -> Coord2D {
+		return Coord2D(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
+	}
+	
+	var angle: Int {
+		let sth = atan2(Double(y), Double(y)) * 1000000
+		return Int(sth)
+	}
+	
+	func distanceFrom(_ other: Coord2D) -> Double {
+		let diff = self-other
+		return sqrt(Double(diff.x * diff.x + diff.y * diff.y))
+	}
+
+	var manhattan: Int {
+		return abs(x) + abs(y)
+	}
+}
+
+enum Direction2D: String {
+	case R = "R"
+	case L = "L"
+	case U = "U"
+	case D = "D"
+	
+	var offset: Coord2D {
+		switch self {
+		case .R:
+			return Coord2D(x: 1, y: 0)
+		case .L:
+			return Coord2D(x: -1, y: 0)
+		case .U:
+			return Coord2D(x: 0, y: 1)
+		case .D:
+			return Coord2D(x: 0, y: -1)
+		}
+	}
+	
+	var left: Direction2D {
+		switch self {
+		case .R:
+			return .U
+		case .L:
+			return .D
+		case .U:
+			return .L
+		case .D:
+			return .R
+		}
+	}
+	
+	var right: Direction2D {
+		switch self {
+		case .R:
+			return .D
+		case .L:
+			return .U
+		case .U:
+			return .R
+		case .D:
+			return .L
+		}
+	}
+	
+	var reverse: Direction2D {
+		return self.left.left
+	}
+}
