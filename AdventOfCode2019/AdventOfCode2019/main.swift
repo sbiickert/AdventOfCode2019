@@ -43,3 +43,7 @@ print("Advent of Code 2021")
 // Day 09
 //SensorBoost.runTests(filename: "09.test")
 //SensorBoost.solve(filename: "09.challenge")
+
+// Day 10
+MonitoringStation.runTests(filename: "10.test")
+//MonitoringStation.solve(filename: "10.challenge")
