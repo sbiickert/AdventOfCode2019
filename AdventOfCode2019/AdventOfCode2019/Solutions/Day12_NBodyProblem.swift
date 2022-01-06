@@ -13,7 +13,7 @@ struct NBodyProblem: AoCSolution {
 		print("\nDay 12 (The N-Body Problem) -> \(filename)")
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		
-		var moons = parseMoons(input: input)
+		let moons = parseMoons(input: input)
 		simulate(moons, steps: 1000)
 		var e = 0
 		moons.forEach({e += $0.totalEnergy})
@@ -37,56 +37,67 @@ struct NBodyProblem: AoCSolution {
 		e = 0
 		moons.forEach({e += $0.totalEnergy})
 		print("total energy: \(e)")
+		
+		moons = parseMoons(input: groupedInput[0])
+		let nSteps = simulateToRepeat(moons)
+		print("Number of steps to repeat: \(nSteps)")
 	}
 	
-	static func simulate(_ moons: [Moon], steps: Int) {
+	private static func simulate(_ moons: [Moon], steps: Int) {
 		for _ in 1...steps {
-			// Apply gravity
-			for m in moons.combinations(ofCount: 2) {
-				let deltaVs = calcDeltaV(moon1: m[0], moon2: m[1])
-				m[0].vel = m[0].vel + deltaVs.dv1
-				m[1].vel = m[1].vel + deltaVs.dv2
-			}
-			
-			// Apply velocity
-			for moon in moons {
-				moon.pos = moon.pos + moon.vel
-			}
+			simulateStep(moons)
 		}
 	}
 	
-	static func calcDeltaV(moon1: Moon, moon2: Moon) -> (dv1: Coord3D, dv2: Coord3D) {
+	private static func simulateToRepeat(_ moons: [Moon]) -> Int {
+		var steps = 0
+		
+		var saved = [Moon]()
+		for moon in moons {
+			saved.append(moon.copy())
+		}
+		
+		while steps == 0 || moons != saved {
+			steps += 1
+			simulateStep(moons)
+		}
+		
+		return steps
+	}
+	
+	private static func simulateStep(_ moons: [Moon]) {
+		// Apply gravity
+		for m in moons.combinations(ofCount: 2) {
+			let deltaVs = calcDeltaV(moon1: m[0], moon2: m[1])
+			m[0].vel = m[0].vel + deltaVs.dv1
+			m[1].vel = m[1].vel + deltaVs.dv2
+		}
+		
+		// Apply velocity
+		for moon in moons {
+			moon.pos = moon.pos + moon.vel
+		}
+	}
+	
+	private static func calcDeltaV(moon1: Moon, moon2: Moon) -> (dv1: Coord3D, dv2: Coord3D) {
 		let diff = moon1.pos - moon2.pos
 		var dv1 = Coord3D.zero
 		var dv2 = Coord3D.zero
-		if diff.x > 0 {
-			dv1.x = -1
-			dv2.x = 1
-		}
-		else if diff.x < 0 {
-			dv1.x = 1
-			dv2.x = -1
-		}
-		if diff.y > 0 {
-			dv1.y = -1
-			dv2.y = 1
-		}
-		else if diff.y < 0 {
-			dv1.y = 1
-			dv2.y = -1
-		}
-		if diff.z > 0 {
-			dv1.z = -1
-			dv2.z = 1
-		}
-		else if diff.z < 0 {
-			dv1.z = 1
-			dv2.z = -1
+		
+		for dimension in 0...2 {
+			if diff[dimension] > 0 {
+				dv1[dimension] = -1
+				dv2[dimension] = 1
+			}
+			else if diff[dimension] < 0 {
+				dv1[dimension] = 1
+				dv2[dimension] = -1
+			}
 		}
 		return (dv1, dv2)
 	}
 	
-	static func parseMoons(input: [String]) -> [Moon] {
+	private static func parseMoons(input: [String]) -> [Moon] {
 		var result = [Moon]()
 		for var line in input {
 			line = line.replacingOccurrences(of: "<", with: "")
@@ -105,7 +116,11 @@ struct NBodyProblem: AoCSolution {
 		return result
 	}
 	
-	class Moon {
+	class Moon: Equatable {
+		static func == (lhs: NBodyProblem.Moon, rhs: NBodyProblem.Moon) -> Bool {
+			return lhs.pos == rhs.pos && lhs.vel == rhs.vel
+		}
+		
 		var pos = Coord3D.zero
 		var vel = Coord3D.zero
 		
@@ -128,9 +143,15 @@ struct NBodyProblem: AoCSolution {
 		var totalEnergy: Int {
 			return potentialEnergy * kineticEnergy
 		}
+				
+		func copy() -> Moon {
+			let result = Moon(position: self.pos)
+			result.vel = self.vel
+			return result
+		}
 	}
 	
-	struct Coord3D {
+	struct Coord3D: Equatable {
 		static var zero: Coord3D {
 			return Coord3D(x: 0, y: 0, z: 0)
 		}
@@ -138,6 +159,31 @@ struct NBodyProblem: AoCSolution {
 		var x: Int
 		var y: Int
 		var z: Int
+		
+		subscript(dimension: Int) -> Int {
+			get {
+				assert(0 <= dimension && dimension <= 2)
+				if dimension == 0 {
+					return x
+				}
+				if dimension == 1 {
+					return y
+				}
+				return z
+			}
+			set {
+				assert(0 <= dimension && dimension <= 2)
+				if dimension == 0 {
+					x = newValue
+				}
+				if dimension == 1 {
+					y = newValue
+				}
+				if dimension == 2 {
+					z = newValue
+				}
+			}
+		}
 		
 		static func +(lhs: Coord3D, rhs: Coord3D) -> Coord3D {
 			return Coord3D(x: lhs.x+rhs.x, y: lhs.y+rhs.y, z: lhs.z+rhs.z)
