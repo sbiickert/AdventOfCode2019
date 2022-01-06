@@ -13,13 +13,19 @@ struct NBodyProblem: AoCSolution {
 		print("\nDay 12 (The N-Body Problem) -> \(filename)")
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		
-		let moons = parseMoons(input: input)
+		var moons = parseMoons(input: input)
 		simulate(moons, steps: 1000)
 		var e = 0
 		moons.forEach({e += $0.totalEnergy})
 		
 		print("Part One")
 		print("Total energy: \(e)")
+		
+		moons = parseMoons(input: input)
+		let nSteps = calculateToRepeat(moons)
+		
+		print("Part Two")
+		print("Number of steps to repeat: \(nSteps)")
 	}
 	
 	static func runTests(filename: String) {
@@ -39,7 +45,11 @@ struct NBodyProblem: AoCSolution {
 		print("total energy: \(e)")
 		
 		moons = parseMoons(input: groupedInput[0])
-		let nSteps = simulateToRepeat(moons)
+		var nSteps = simulateToRepeat(moons)
+		print("Number of steps to repeat: \(nSteps)")
+
+		moons = parseMoons(input: groupedInput[1])
+		nSteps = calculateToRepeat(moons)
 		print("Number of steps to repeat: \(nSteps)")
 	}
 	
@@ -65,6 +75,47 @@ struct NBodyProblem: AoCSolution {
 		return steps
 	}
 	
+	private static func calculateToRepeat(_ moons: [Moon]) -> Int {
+		let cycles = analyzeCycles(moons)
+		print(cycles)
+		var allCycles = Set<Int>()
+		for moon in cycles {
+			for cycle in moon {
+				allCycles.insert(cycle)
+			}
+		}
+		let repeatCycles = Array(Array(allCycles).sorted().reversed())
+		print(repeatCycles)
+		var maxSync = 0
+		var jump = repeatCycles[maxSync]
+		var ts = jump
+		var remainders = repeatCycles.map({ts % $0})
+		
+		while true {
+			var bingo = true
+			remainders[0...maxSync+1].forEach({bingo = bingo && $0 == 0})
+			//if remainders 0...maxSync+1 are all zeros
+			if bingo {
+				maxSync += 1
+				remainders.forEach({bingo = bingo && $0 == 0})
+				if bingo {
+					// All remainders are zeros
+					print("Found future state at time \(ts)")
+					break
+				}
+				if maxSync < repeatCycles.count - 2 {
+					// Don't want to change the jump for the last digit
+					jump *= repeatCycles[maxSync]
+					print("Jump changed to \(jump)")
+				}
+			}
+			
+			ts += jump
+			remainders = repeatCycles.map({ts % $0})
+		}
+		return ts
+	}
+	
 	private static func simulateStep(_ moons: [Moon]) {
 		// Apply gravity
 		for m in moons.combinations(ofCount: 2) {
@@ -77,6 +128,72 @@ struct NBodyProblem: AoCSolution {
 		for moon in moons {
 			moon.pos = moon.pos + moon.vel
 		}
+	}
+	
+	private static func analyzeCycles(_ moons: [Moon]) -> [[Int]] {
+		// Set up variables to log progress
+		var cycles = [[Int]](repeating: [Int](repeating: 0, count: 6), count: moons.count)
+		var tracking = [[[Int]]]()
+		for _ in moons {
+			let track = [[Int]](repeating: [Int](), count: 6)
+			tracking.append(track)
+		}
+		
+		let analyzeAfter = 10000
+		var allCyclesMeasured = false
+		var cycle = 0
+		while allCyclesMeasured == false {
+			for (m, moon) in moons.enumerated() {
+				for axis in 0..<3 {
+					if cycles[m][axis] == 0 {
+						tracking[m][axis].append(moon.pos[axis])
+					}
+					if cycles[m][axis+3] == 0 {
+						tracking[m][axis+3].append(moon.vel[axis])
+					}
+				}
+			}
+			cycle += 1
+			if cycle % analyzeAfter == 0 {
+				//print("cycle \(cycle). Progress:\n \(cycles)")
+				// Analyze for cycling. Has to be an even number of cycles.
+				for (m, _) in moons.enumerated() {
+					for i in 0..<6 {
+						if cycles[m][i] == 0 {
+							// Returns 0 if not found
+							let c = findCycle(track: tracking[m][i], startAt: cycle - analyzeAfter + 2)
+							if c > 0 {
+								//print("Moon \(m) axis \(i) cycled after \(c) steps.")
+								cycles[m][i] = c
+							}
+						}
+					}
+				}
+				// Are we done?
+				allCyclesMeasured = true
+				for m in 0..<moons.count {
+					if cycles[m].contains(0) {
+						allCyclesMeasured = false
+						break
+					}
+				}
+			}
+			simulateStep(moons)
+		}
+		return cycles
+	}
+	
+	private static func findCycle(track: [Int], startAt: Int) -> Int {
+		assert(track.count % 2 == 0)
+		for i in stride(from: startAt, to: track.count, by: 2) {
+			let half = i / 2
+			let front = track[0..<half]
+			let back = track[half..<(half+front.count)]
+			if front == back {
+				return half
+			}
+		}
+		return 0
 	}
 	
 	private static func calcDeltaV(moon1: Moon, moon2: Moon) -> (dv1: Coord3D, dv2: Coord3D) {
