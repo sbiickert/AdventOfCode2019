@@ -29,6 +29,9 @@
 		37E7DB0D27849D87006758A8 /* Day09_SensorBoost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E7DB0C27849D87006758A8 /* Day09_SensorBoost.swift */; };
 		37E7DB1027849E1B006758A8 /* 09.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37E7DB0E27849D95006758A8 /* 09.test.txt */; };
 		37E7DB1127849E1B006758A8 /* 09.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37E7DB0F27849DA0006758A8 /* 09.challenge.txt */; };
+		37F3F6BF27869BD000724DB4 /* Day12_NBodyProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F3F6BE27869BD000724DB4 /* Day12_NBodyProblem.swift */; };
+		37F3F6C227869C4800724DB4 /* 12.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F3F6C027869C3400724DB4 /* 12.test.txt */; };
+		37F3F6C327869C4800724DB4 /* 12.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F3F6C127869C4000724DB4 /* 12.challenge.txt */; };
 		37F69410277FB0D6006A1504 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6940F277FB0D6006A1504 /* main.swift */; };
 		37F69419277FB126006A1504 /* AoCUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F69418277FB126006A1504 /* AoCUtil.swift */; };
 		37F6941C277FB159006A1504 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 37F6941B277FB159006A1504 /* Algorithms */; };
@@ -53,6 +56,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				37F3F6C227869C4800724DB4 /* 12.test.txt in CopyFiles */,
+				37F3F6C327869C4800724DB4 /* 12.challenge.txt in CopyFiles */,
 				3745362C27865B9B000168AF /* 11.challenge.txt in CopyFiles */,
 				37FF784227852B2600EDF372 /* 10.test.txt in CopyFiles */,
 				37FF784327852B2600EDF372 /* 10.challenge.txt in CopyFiles */,
@@ -100,6 +105,9 @@
 		37E7DB0C27849D87006758A8 /* Day09_SensorBoost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day09_SensorBoost.swift; sourceTree = "<group>"; };
 		37E7DB0E27849D95006758A8 /* 09.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 09.test.txt; sourceTree = "<group>"; };
 		37E7DB0F27849DA0006758A8 /* 09.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 09.challenge.txt; sourceTree = "<group>"; };
+		37F3F6BE27869BD000724DB4 /* Day12_NBodyProblem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day12_NBodyProblem.swift; sourceTree = "<group>"; };
+		37F3F6C027869C3400724DB4 /* 12.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 12.test.txt; sourceTree = "<group>"; };
+		37F3F6C127869C4000724DB4 /* 12.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 12.challenge.txt; sourceTree = "<group>"; };
 		37F6940C277FB0D6006A1504 /* AdventOfCode2019 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode2019; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F6940F277FB0D6006A1504 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		37F69418277FB126006A1504 /* AoCUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoCUtil.swift; sourceTree = "<group>"; };
@@ -171,6 +179,7 @@
 				37FF783E2785291B00EDF372 /* Day10_MonitoringStation.swift */,
 				374536272786393C000168AF /* Day11_SpacePolice.swift */,
 				3745362A27863BC3000168AF /* IntCode.swift */,
+				37F3F6BE27869BD000724DB4 /* Day12_NBodyProblem.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -197,6 +206,8 @@
 				37FF784027852A3900EDF372 /* 10.test.txt */,
 				37FF784127852A6400EDF372 /* 10.challenge.txt */,
 				374536292786399A000168AF /* 11.challenge.txt */,
+				37F3F6C027869C3400724DB4 /* 12.test.txt */,
+				37F3F6C127869C4000724DB4 /* 12.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -269,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37F3F6BF27869BD000724DB4 /* Day12_NBodyProblem.swift in Sources */,
 				37D46B42278259A300C9B177 /* Day05_SunnyAsteroids.swift in Sources */,
 				3761EEA127834B0700A8141E /* Day06_UniversalOrbit.swift in Sources */,
 				3761EEA3278355F100A8141E /* Day07_AmplificationCircuit.swift in Sources */,
