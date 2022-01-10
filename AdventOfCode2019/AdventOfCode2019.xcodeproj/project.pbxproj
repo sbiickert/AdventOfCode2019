@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37245B73278CA7B4007C6D11 /* 15.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 374877E0278C7D0900F53240 /* 15.challenge.txt */; };
 		374536282786393C000168AF /* Day11_SpacePolice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374536272786393C000168AF /* Day11_SpacePolice.swift */; };
 		3745362B27863BC3000168AF /* IntCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745362A27863BC3000168AF /* IntCode.swift */; };
 		3745362C27865B9B000168AF /* 11.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 374536292786399A000168AF /* 11.challenge.txt */; };
+		374877E2278C7D2400F53240 /* Day15_OxygenSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374877E1278C7D2400F53240 /* Day15_OxygenSystem.swift */; };
 		3761EE9E27834AD700A8141E /* 06.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3761EE9C278349B400A8141E /* 06.test.txt */; };
 		3761EE9F27834AD700A8141E /* 06.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3761EE9D278349C500A8141E /* 06.challenge.txt */; };
 		3761EEA127834B0700A8141E /* Day06_UniversalOrbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */; };
@@ -61,6 +63,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				37245B73278CA7B4007C6D11 /* 15.challenge.txt in CopyFiles */,
 				37B0A60F278A942A009DBA66 /* 14.test.txt in CopyFiles */,
 				37B0A610278A942A009DBA66 /* 14.challenge.txt in CopyFiles */,
 				379DCFB82787CC630056FD6F /* 13.challenge.txt in CopyFiles */,
@@ -94,6 +97,8 @@
 		374536272786393C000168AF /* Day11_SpacePolice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day11_SpacePolice.swift; sourceTree = "<group>"; };
 		374536292786399A000168AF /* 11.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 11.challenge.txt; sourceTree = "<group>"; };
 		3745362A27863BC3000168AF /* IntCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntCode.swift; sourceTree = "<group>"; };
+		374877E0278C7D0900F53240 /* 15.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 15.challenge.txt; sourceTree = "<group>"; };
+		374877E1278C7D2400F53240 /* Day15_OxygenSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day15_OxygenSystem.swift; sourceTree = "<group>"; };
 		3761EE9C278349B400A8141E /* 06.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 06.test.txt; sourceTree = "<group>"; };
 		3761EE9D278349C500A8141E /* 06.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 06.challenge.txt; sourceTree = "<group>"; };
 		3761EEA027834B0700A8141E /* Day06_UniversalOrbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day06_UniversalOrbit.swift; sourceTree = "<group>"; };
@@ -195,6 +200,7 @@
 				37F3F6BE27869BD000724DB4 /* Day12_NBodyProblem.swift */,
 				379DCFB62787CB030056FD6F /* Day13_CarePackage.swift */,
 				37FC3C5A2789E57000935859 /* Day14_Stoichiometry.swift */,
+				374877E1278C7D2400F53240 /* Day15_OxygenSystem.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -226,6 +232,7 @@
 				379DCFB52787CAEA0056FD6F /* 13.challenge.txt */,
 				37FC3C5C2789E5C000935859 /* 14.test.txt */,
 				37FC3C5D2789E5D200935859 /* 14.challenge.txt */,
+				374877E0278C7D0900F53240 /* 15.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -299,6 +306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37F3F6BF27869BD000724DB4 /* Day12_NBodyProblem.swift in Sources */,
+				374877E2278C7D2400F53240 /* Day15_OxygenSystem.swift in Sources */,
 				37D46B42278259A300C9B177 /* Day05_SunnyAsteroids.swift in Sources */,
 				37FC3C5B2789E57000935859 /* Day14_Stoichiometry.swift in Sources */,
 				3761EEA127834B0700A8141E /* Day06_UniversalOrbit.swift in Sources */,

@@ -12,13 +12,15 @@ class IntCodeComputer {
 		return value.split(separator: ",").map({Int(String($0))!})
 	}
 	
+	// State
 	var program = [Int]()
-	
 	var input = [Int]()
 	var output = [Int]()
 	var ptr = 0
 	var isHalted = false
 	var relativeBase = 0
+	
+	// For writing out readMem, writeMem, etc.
 	var debug = false
 	
 	init() {}
@@ -149,6 +151,19 @@ class IntCodeComputer {
 				return p
 			}
 		}
+	}
+	
+	func saveState() -> (program: [Int], input: [Int], output: [Int], ptr: Int, isHalted: Bool, relativeBase: Int) {
+		return (program, input, output, ptr, isHalted, relativeBase)
+	}
+	
+	func restore(state: (program: [Int], input: [Int], output: [Int], ptr: Int, isHalted: Bool, relativeBase: Int)) {
+		self.program = state.program
+		self.input = state.input
+		self.output = state.output
+		self.ptr = state.ptr
+		self.isHalted = state.isHalted
+		self.relativeBase = state.relativeBase
 	}
 	
 	struct Instruction {

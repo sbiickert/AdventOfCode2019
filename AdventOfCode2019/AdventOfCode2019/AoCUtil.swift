@@ -96,6 +96,14 @@ struct Coord2D: Hashable {
 	var manhattan: Int {
 		return abs(x) + abs(y)
 	}
+	
+	func containedBy(xRange: Range<Int>, yRange: Range<Int>) -> Bool {
+		return xRange.contains(x) && yRange.contains(y)
+	}
+	
+	func containedBy(xClosedRange: ClosedRange<Int>, yClosedRange: ClosedRange<Int>) -> Bool {
+		return xClosedRange.contains(x) && yClosedRange.contains(y)
+	}
 }
 
 enum Direction2D: String {

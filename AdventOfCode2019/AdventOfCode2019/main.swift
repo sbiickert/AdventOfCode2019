@@ -61,3 +61,6 @@ print("Advent of Code 2021")
 // Day 14
 //Stoichiometry.runTests(filename: "14.test")
 //Stoichiometry.solve(filename: "14.challenge")
+
+// Day 15
+OxygenSystem.solve(filename: "15.challenge")
