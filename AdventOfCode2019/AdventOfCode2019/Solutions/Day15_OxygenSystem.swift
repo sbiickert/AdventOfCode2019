@@ -14,29 +14,30 @@ struct OxygenSystem: AoCSolution {
 		let input = AoCUtil.readInputFile(named: filename, removingEmptyLines: true)
 		
 		let program = IntCodeComputer.parseProgram(input[0])
-		let shortestPath = solvePartOne(program)
 		
-		print("Part One")
-		print("The fewest movement commands to reach the oxygen system is \(shortestPath - 1)")
-	}
-	
-	private static func solvePartOne(_ program: [Int]) -> Int {
-		var result = 0
 		let droid = Droid(program: program)
 		mapSpace(with: droid)
 		let space = droid.map
-		drawSpace(space, droidLocation: droid.location, path: nil)
-		let path = findPath(from: droid.location, to: findOxygenSysten(in: space)!, in: space)
-		drawSpace(space, droidLocation: droid.location, path: path)
+		//drawSpace(space, droidLocation: droid.location, path: nil)
+		let oxLoc = findOxygenSystem(in: space)!
+		let path = findPath(from: droid.location, to: oxLoc, in: space)[0]
+		//drawSpace(space, droidLocation: droid.location, path: path)
 
-		return path.count
+		print("Part One")
+		print("The fewest movement commands to reach the oxygen system is \(path.count - 1)")
+			
+		let diffusionPaths = findPath(from: oxLoc, to: nil, in: space).sorted(by: {$0.count < $1.count})
+		let longestPathCount = diffusionPaths.last!.count
+
+		print("Part Two")
+		print("The time needed to oxygenate the area is \(longestPathCount - 1) minutes.") // 1112 too high
 	}
 	
 	private static func mapSpace(with droid: Droid) {
 		for direction in Direction.allCases {
 			let location = droid.location
 			if droid.neighbour(direction) == .unknown {
-				// If we're picking up the droid and putting it down in an earlier spot, need to reset its state
+				// If we're picking up the droid and putting it down in an earlier spot, need to reset its brain
 				let state = droid.brain.saveState()
 				if droid.move(direction) != .wall {
 					mapSpace(with: droid)
@@ -47,7 +48,9 @@ struct OxygenSystem: AoCSolution {
 		}
 	}
 	
-	private static func findPath(from startLoc: Coord2D, to endLoc: Coord2D, in space: [[Mapped]]) -> [Coord2D] {
+	// Made endLoc optional for Part 2, because we want to return all paths.
+	// When endLoc is non-nil, result[0] is the shortest path to endLoc.
+	private static func findPath(from startLoc: Coord2D, to endLoc: Coord2D?, in space: [[Mapped]]) -> [[Coord2D]] {
 		var explored = Set<Coord2D>()
 		var paths = Dictionary<Coord2D, [Coord2D]>()
 		var q = [Coord2D]()
@@ -58,8 +61,9 @@ struct OxygenSystem: AoCSolution {
 		while q.isEmpty == false {
 			let c = q.removeFirst()
 			let pathToCoord = paths[c]!
-			if c == endLoc {
-				return pathToCoord
+			if let endLoc = endLoc,
+			   c == endLoc {
+				return [pathToCoord]
 			}
 			explored.insert(c)
 			for dir in Direction.allCases {
@@ -72,7 +76,7 @@ struct OxygenSystem: AoCSolution {
 				}
 			}
 		}
-		return [Coord2D]()
+		return Array(paths.values)
 	}
 	
 	enum Mapped: Int {
@@ -171,7 +175,7 @@ struct OxygenSystem: AoCSolution {
 		}
 	}
 	
-	private static func findOxygenSysten(in space: [[Mapped]]) -> Coord2D? {
+	private static func findOxygenSystem(in space: [[Mapped]]) -> Coord2D? {
 		for (x, y) in product(0..<space[0].count, 0..<space.count) {
 			if space[y][x] == .oxygenSystem {
 				return Coord2D(x: x, y: y)
