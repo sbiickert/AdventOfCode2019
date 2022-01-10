@@ -19,6 +19,8 @@
 		377ECBEC278141BF00D12F72 /* Day04_SecureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377ECBEB278141BF00D12F72 /* Day04_SecureContainer.swift */; };
 		379DCFB72787CB030056FD6F /* Day13_CarePackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379DCFB62787CB030056FD6F /* Day13_CarePackage.swift */; };
 		379DCFB82787CC630056FD6F /* 13.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 379DCFB52787CAEA0056FD6F /* 13.challenge.txt */; };
+		37B0A60F278A942A009DBA66 /* 14.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37FC3C5C2789E5C000935859 /* 14.test.txt */; };
+		37B0A610278A942A009DBA66 /* 14.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37FC3C5D2789E5D200935859 /* 14.challenge.txt */; };
 		37C2D9852783927D0043B21F /* Day08_SpaceImageFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C2D9842783927D0043B21F /* Day08_SpaceImageFormat.swift */; };
 		37C2D988278395F30043B21F /* 08.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37C2D986278392DE0043B21F /* 08.test.txt */; };
 		37C2D989278395F30043B21F /* 08.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37C2D987278393080043B21F /* 08.challenge.txt */; };
@@ -46,6 +48,7 @@
 		37F6942B277FBA89006A1504 /* Day02_ProgramAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F6942A277FBA89006A1504 /* Day02_ProgramAlarm.swift */; };
 		37F6942E277FDC57006A1504 /* 02.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F6942C277FBA9A006A1504 /* 02.test.txt */; };
 		37F6942F277FDC57006A1504 /* 02.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37F6942D277FBAA7006A1504 /* 02.challenge.txt */; };
+		37FC3C5B2789E57000935859 /* Day14_Stoichiometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FC3C5A2789E57000935859 /* Day14_Stoichiometry.swift */; };
 		37FF783F2785291B00EDF372 /* Day10_MonitoringStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF783E2785291B00EDF372 /* Day10_MonitoringStation.swift */; };
 		37FF784227852B2600EDF372 /* 10.test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37FF784027852A3900EDF372 /* 10.test.txt */; };
 		37FF784327852B2600EDF372 /* 10.challenge.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37FF784127852A6400EDF372 /* 10.challenge.txt */; };
@@ -58,6 +61,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				37B0A60F278A942A009DBA66 /* 14.test.txt in CopyFiles */,
+				37B0A610278A942A009DBA66 /* 14.challenge.txt in CopyFiles */,
 				379DCFB82787CC630056FD6F /* 13.challenge.txt in CopyFiles */,
 				37F3F6C227869C4800724DB4 /* 12.test.txt in CopyFiles */,
 				37F3F6C327869C4800724DB4 /* 12.challenge.txt in CopyFiles */,
@@ -122,6 +127,9 @@
 		37F6942A277FBA89006A1504 /* Day02_ProgramAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day02_ProgramAlarm.swift; sourceTree = "<group>"; };
 		37F6942C277FBA9A006A1504 /* 02.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 02.test.txt; sourceTree = "<group>"; };
 		37F6942D277FBAA7006A1504 /* 02.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 02.challenge.txt; sourceTree = "<group>"; };
+		37FC3C5A2789E57000935859 /* Day14_Stoichiometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day14_Stoichiometry.swift; sourceTree = "<group>"; };
+		37FC3C5C2789E5C000935859 /* 14.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 14.test.txt; sourceTree = "<group>"; };
+		37FC3C5D2789E5D200935859 /* 14.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 14.challenge.txt; sourceTree = "<group>"; };
 		37FF783E2785291B00EDF372 /* Day10_MonitoringStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day10_MonitoringStation.swift; sourceTree = "<group>"; };
 		37FF784027852A3900EDF372 /* 10.test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 10.test.txt; sourceTree = "<group>"; };
 		37FF784127852A6400EDF372 /* 10.challenge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 10.challenge.txt; sourceTree = "<group>"; };
@@ -186,6 +194,7 @@
 				3745362A27863BC3000168AF /* IntCode.swift */,
 				37F3F6BE27869BD000724DB4 /* Day12_NBodyProblem.swift */,
 				379DCFB62787CB030056FD6F /* Day13_CarePackage.swift */,
+				37FC3C5A2789E57000935859 /* Day14_Stoichiometry.swift */,
 			);
 			path = Solutions;
 			sourceTree = "<group>";
@@ -215,6 +224,8 @@
 				37F3F6C027869C3400724DB4 /* 12.test.txt */,
 				37F3F6C127869C4000724DB4 /* 12.challenge.txt */,
 				379DCFB52787CAEA0056FD6F /* 13.challenge.txt */,
+				37FC3C5C2789E5C000935859 /* 14.test.txt */,
+				37FC3C5D2789E5D200935859 /* 14.challenge.txt */,
 			);
 			path = "Input Files";
 			sourceTree = "<group>";
@@ -289,6 +300,7 @@
 			files = (
 				37F3F6BF27869BD000724DB4 /* Day12_NBodyProblem.swift in Sources */,
 				37D46B42278259A300C9B177 /* Day05_SunnyAsteroids.swift in Sources */,
+				37FC3C5B2789E57000935859 /* Day14_Stoichiometry.swift in Sources */,
 				3761EEA127834B0700A8141E /* Day06_UniversalOrbit.swift in Sources */,
 				3761EEA3278355F100A8141E /* Day07_AmplificationCircuit.swift in Sources */,
 				37F69410277FB0D6006A1504 /* main.swift in Sources */,

@@ -56,4 +56,8 @@ print("Advent of Code 2021")
 //NBodyProblem.solve(filename: "12.challenge")
 
 // Day 13
-CarePackage.solve(filename: "13.challenge")
+//CarePackage.solve(filename: "13.challenge")
+
+// Day 14
+//Stoichiometry.runTests(filename: "14.test")
+//Stoichiometry.solve(filename: "14.challenge")

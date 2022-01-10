@@ -120,7 +120,7 @@ struct CarePackage: AoCSolution {
 		
 		func draw() {
 			let s = screen
-			var j = joystickPosition
+			let j = joystickPosition
 			print("Score: \(score)  Joystick: \(j)")
 			for row in s {
 				print(row.map({$0.character}).joined())
