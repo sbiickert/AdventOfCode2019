@@ -42,6 +42,7 @@ def calc_output(signal: List[int], num_phases: int) -> List[int]:
 		print(f'Phase {phase+1} complete') # {sig_arr.tolist()}')
 	return sig_arr.tolist()
 
+# Taken from https://github.com/XorZy/Aoc_2019_Day_16/blob/master/Program.cs
 def cheat(signal: np.ndarray, offset:int, num_phases: int):
 	signal_len = signal.size
 	_cache = np.zeros(signal_len, dtype=int)
