@@ -4,7 +4,6 @@
 
 package ca.biickert.aoc2019;
 
-import ca.biickert.aoc2019.util.InputReader;
 /**
  *
  * @author sjb
@@ -17,5 +16,6 @@ public class AoC2019 {
 	
 	//String filename = "../../Input/day00_challenge.txt";
 	//var input = InputReader.readInputFile(filename);
+	
     }
 }

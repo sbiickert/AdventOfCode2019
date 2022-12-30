@@ -4,6 +4,8 @@
  */
 package ca.biickert.aoc2019.spatial;
 
+import java.util.Objects;
+
 /**
  *
  * @author sjb
@@ -11,10 +13,12 @@ package ca.biickert.aoc2019.spatial;
 public class Coord2D {
     private int x;
     private int y;
+    private int hashCode;
 
     public Coord2D(int x, int y) {
 	this.x = x;
 	this.y = y;
+	this.hashCode = Objects.hash(x,y);
     }
 
     public int getX() {
@@ -54,8 +58,17 @@ public class Coord2D {
 	return String.format("[%d,%d]", x, y);
     }
     
-    public boolean equals(Coord2D other) {
-	return this.x == other.getX() && this.y == other.getY();
+    @Override
+    public boolean equals(Object o) {
+	if (this == o) { return true; }
+	if (o == null || this.getClass() != o.getClass()) {return false; }
+	Coord2D that = (Coord2D) o;
+	return this.x == that.getX() && this.y == that.getY();
+    }
+    
+    @Override
+    public int hashCode() {
+	return this.hashCode;
     }
     
     public Coord2D add(Coord2D other) {

@@ -4,7 +4,8 @@
  */
 package ca.biickert.aoc2019.spatial;
 
-import ca.biickert.aoc2019.spatial.Coord2D;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -222,4 +223,19 @@ public class Coord2DTest {
 	assertEquals(expResult, result);
     }
     
+    /**
+     * Testing if can be a key for a Map
+     */
+    @Test
+    public void testKeyMap() {
+	System.out.println("keyMap");
+	Map<Coord2D, Integer> map = new HashMap<>();
+	map.put(new Coord2D(1,1), 100);
+	assertEquals(map.size(), 1);
+	map.put(new Coord2D(2,2), 100);
+	assertEquals(map.size(), 2);
+	map.replace(new Coord2D(1,1), 200);
+	assertEquals(map.size(), 2);
+	assertEquals(map.get(new Coord2D(1,1)), 200);
+    }
 }
