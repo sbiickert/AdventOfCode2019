@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  * @author sjb
  */
-public class Coord2D {
+public class Coord2D implements Cloneable {
     private int x;
     private int y;
     private int hashCode;
@@ -69,6 +69,12 @@ public class Coord2D {
     @Override
     public int hashCode() {
 	return this.hashCode;
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+	super.clone();
+	return new Coord2D(x, y);
     }
     
     public Coord2D add(Coord2D other) {
