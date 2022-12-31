@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
+
 package ca.biickert.aoc2019.util;
 
 import java.util.List;
@@ -20,43 +17,27 @@ public class InputReaderTest {
     
     public InputReaderTest() {
     }
-
-    @org.junit.jupiter.api.BeforeAll
-    public static void setUpClass() throws Exception {
-    }
-
-    @org.junit.jupiter.api.AfterAll
-    public static void tearDownClass() throws Exception {
-    }
-
-    @org.junit.jupiter.api.BeforeEach
-    public void setUp() throws Exception {
-    }
-
-    @org.junit.jupiter.api.AfterEach
-    public void tearDown() throws Exception {
+    
+    @BeforeAll
+    public static void setUpClass() {
     }
     
-//    @BeforeAll
-//    public static void setUpClass() {
-//    }
-//    
-//    @AfterAll
-//    public static void tearDownClass() {
-//    }
-//    
-//    @BeforeEach
-//    public void setUp() {
-//    }
-//    
-//    @AfterEach
-//    public void tearDown() {
-//    }
+    @AfterAll
+    public static void tearDownClass() {
+    }
+    
+    @BeforeEach
+    public void setUp() {
+    }
+    
+    @AfterEach
+    public void tearDown() {
+    }
 
     /**
      * Test of readInputFile method, of class InputReader.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testReadInputFile() {
 	System.out.println("readInputFile");
 	String filename = "../../Input/day00_test.txt";
@@ -68,7 +49,7 @@ public class InputReaderTest {
     /**
      * Test of readGroupedInputFile method, of class InputReader.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testReadGroupedInputFile_String_int() {
 	System.out.println("readGroupedInputFile");
 	String filename = "../../Input/day00_test.txt";
@@ -81,7 +62,7 @@ public class InputReaderTest {
     /**
      * Test of readGroupedInputFile method, of class InputReader.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void testReadGroupedInputFile_String() {
 	System.out.println("readGroupedInputFile");
 	String filename = "../../Input/day00_test.txt";
