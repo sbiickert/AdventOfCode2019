@@ -4,6 +4,8 @@
 
 package ca.biickert.aoc2019;
 
+import ca.biickert.aoc2019.util.Solution;
+
 /**
  *
  * @author sjb
@@ -14,8 +16,9 @@ public class AoC2019 {
         System.out.println("Advent of Code 2019");
 	System.out.println("Working Directory = " + System.getProperty("user.dir"));
 	
-	//String filename = "../../Input/day00_challenge.txt";
-	//var input = InputReader.readInputFile(filename);
-	
+	var day01 = new Day01();
+	var input = Solution.inputsForSolution(day01).get(0);
+	var r01 = day01.solve(input.filename(), input.index());
+	System.out.println(r01);
     }
 }

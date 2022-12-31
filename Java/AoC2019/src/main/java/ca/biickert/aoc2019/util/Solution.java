@@ -43,8 +43,7 @@ public abstract class Solution {
     boolean emptyLinesIndicateMultipleInputs = true;
     
     public Solution(int day, String name) {
-	this.day = day;
-	this.name = name;
+	this(day, name, false);
     }
     
     public Solution(int day, String name, boolean emptyLinesIndicateMultipleInputs) {
@@ -53,7 +52,7 @@ public abstract class Solution {
 	this.emptyLinesIndicateMultipleInputs = emptyLinesIndicateMultipleInputs;
     }
     
-    Result solve(String filename, int index) {
+    public Result solve(String filename, int index) {
 	System.out.println(String.format("Day %02d, %s. input: %s [%d]", day, name, filename, index));
 	return new Result("", "");
     }
