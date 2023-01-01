@@ -1,4 +1,3 @@
-
 package ca.biickert.aoc2019;
 
 import ca.biickert.aoc2019.util.InputReader;
@@ -11,24 +10,25 @@ import java.util.List;
  * @author sjb
  */
 public class Day01 extends Solution {
+
     public Day01() {
 	super(1, "The Tyranny of the Rocket Equation");
     }
-    
+
     @Override
     public Result solve(String filename, int index) {
-	var result = super.solve(filename, index);
-	
+	super.solve(filename, index);
+
 	var input = InputReader.readInputFile(filename);
-	
+
 	var part1Solution = solvePartOne(input);
 	var part2Solution = solvePartTwo(input);
-	
-	result = new Result(Integer.toString(part1Solution), Integer.toString(part2Solution));
-	
+
+	var result = new Result(Integer.toString(part1Solution), Integer.toString(part2Solution));
+
 	return result;
     }
-    
+
     private int solvePartOne(List<String> input) {
 	var sum = 0;
 	for (var line : input) {
@@ -39,7 +39,7 @@ public class Day01 extends Solution {
 	}
 	return sum;
     }
-    
+
     private int solvePartTwo(List<String> input) {
 	var sum = 0;
 	for (var line : input) {
@@ -57,7 +57,7 @@ public class Day01 extends Solution {
 	}
 	return sum;
     }
-    
+
     private int fuelNeededForMass(int mass) {
 	int fuel = Math.round(mass / 3) - 2;
 	return fuel;

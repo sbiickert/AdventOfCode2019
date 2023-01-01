@@ -1,6 +1,7 @@
-
 package ca.biickert.aoc2019;
 
+import ca.biickert.aoc2019.util.Input;
+import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
 
 /**
@@ -10,12 +11,19 @@ import ca.biickert.aoc2019.util.Solution;
 public class AoC2019 {
 
     public static void main(String[] args) {
-        System.out.println("Advent of Code 2019");
+	System.out.println("Advent of Code 2019");
 	System.out.println("Working Directory = " + System.getProperty("user.dir"));
+
+	Input input;
+	Result result;
 	
-	var day01 = new Day01();
-	var input = Solution.inputsForSolution(day01).get(0);
-	var r01 = day01.solve(input.filename(), input.index());
-	System.out.println(r01);
+	var day = new Day02();
+	
+	//input = Solution.tests(day).get(4);
+	input = Solution.challenge(day);
+	
+	result = day.solve(input.filename(), input.index());
+	
+	System.out.println(result);
     }
 }
