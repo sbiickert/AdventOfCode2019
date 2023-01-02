@@ -5,8 +5,10 @@ import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -35,7 +37,7 @@ public class Day06 extends Solution {
     private int solvePartOne(List<String> input) {
 	var map = buildMap(input);
 	var result = 0;
-	
+
 	for (String key : map.keySet()) {
 	    var body = map.get(key);
 	    int orbits = 0;
@@ -50,7 +52,37 @@ public class Day06 extends Solution {
     }
 
     private int solvePartTwo(List<String> input) {
-	return -9999;
+	var map = buildMap(input);
+	Set<String> myOrbits = new HashSet<>();
+	var body = map.get("YOU");
+	while (body != null) {
+	    myOrbits.add(body.name);
+	    body = body.inOrbitAround;
+	}
+
+	Body common = null;
+	int transferCount = -1; // Will count SAN to body, otherwise
+	body = map.get("SAN");
+	while (body != null) {
+	    if (myOrbits.contains(body.name)) {
+		common = body;
+		break;
+	    }
+	    body = body.inOrbitAround;
+	    transferCount++;
+	}
+
+	body = map.get("YOU");
+	transferCount--;  // Will count YOU to body, otherwise
+	while (body != null) {
+	    if (body.name.equals(common.name)) {
+		break;
+	    }
+	    body = body.inOrbitAround;
+	    transferCount++;
+	}
+
+	return transferCount;
     }
 
     private Map<String, Body> buildMap(List<String> input) {
