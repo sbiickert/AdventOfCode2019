@@ -39,13 +39,17 @@ public class Day05 extends Solution {
 	computer.input.add(1);
 	computer.execute();
 	var result = computer.output;
-	computer.printState();
 	return (result == null) ? -9999 : result;
     }
 
     private int solvePartTwo(List<String> input) {
-	return 0;
-    }
+	var computer = new IntCodeComputer();
+	computer.load(input.get(0));
+	computer.input.add(5);
+	computer.execute();
+	var result = computer.output;
+	return (result == null) ? -9999 : result;
+     }
 
 }
 
@@ -55,6 +59,10 @@ class IntCodeComputer {
     static final int OPCODE_MULTIPLY = 2;
     static final int OPCODE_INPUT = 3;
     static final int OPCODE_OUTPUT = 4;
+    static final int OPCODE_JUMP_IF_TRUE = 5;
+    static final int OPCODE_JUMP_IF_FALSE = 6;
+    static final int OPCODE_LESS_THAN = 7;
+    static final int OPCODE_EQUALS = 8;
     static final int EXIT = 99;
 
     private List<Integer> program;
@@ -106,6 +114,36 @@ class IntCodeComputer {
 		case OPCODE_OUTPUT:
 		    output = getValue(ptr + 1, opCode.get(1));
 		    ptr += 2;
+		    break;
+		case OPCODE_JUMP_IF_TRUE:
+		    input1 = getValue(ptr+1, opCode.get(1));
+		    if (input1 != 0) {
+			ptr = getValue(ptr+2, opCode.get(2));
+		    } else {    
+			ptr += 3;
+		    }
+		    break;
+		case OPCODE_JUMP_IF_FALSE:
+		    input1 = getValue(ptr+1, opCode.get(1));
+		    if (input1 == 0) {
+			ptr = getValue(ptr+2, opCode.get(2));
+		    } else {    
+			ptr += 3;
+		    }
+		    break;
+		case OPCODE_LESS_THAN:
+		    input1 = getValue(ptr + 1, opCode.get(1));
+		    input2 = getValue(ptr + 2, opCode.get(2));
+		    outputPos = getImmediateValue(ptr + 3);
+		    program.set(outputPos, (input1 < input2) ? 1 : 0);		    
+		    ptr += 4;
+		    break;
+		case OPCODE_EQUALS:
+		    input1 = getValue(ptr + 1, opCode.get(1));
+		    input2 = getValue(ptr + 2, opCode.get(2));
+		    outputPos = getImmediateValue(ptr + 3);
+		    program.set(outputPos, (input1 == input2) ? 1 : 0);		    
+		    ptr += 4;
 		    break;
 		case EXIT:
 		    bExit = true;
