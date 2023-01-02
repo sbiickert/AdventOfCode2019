@@ -34,7 +34,7 @@ public class Day05 extends Solution {
     }
 
     private int solvePartOne(List<String> input) {
-	var computer = new IntCodeComputer();
+	var computer = new IntCodeComputer5();
 	computer.load(input.get(0));
 	computer.input.add(1);
 	computer.execute();
@@ -43,7 +43,7 @@ public class Day05 extends Solution {
     }
 
     private int solvePartTwo(List<String> input) {
-	var computer = new IntCodeComputer();
+	var computer = new IntCodeComputer5();
 	computer.load(input.get(0));
 	computer.input.add(5);
 	computer.execute();
@@ -53,7 +53,7 @@ public class Day05 extends Solution {
 
 }
 
-class IntCodeComputer {
+class IntCodeComputer5 {
 
     static final int OPCODE_ADD = 1;
     static final int OPCODE_MULTIPLY = 2;
