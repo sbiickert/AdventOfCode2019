@@ -32,3 +32,9 @@ I'm doing some on the iPad and some on the Mac in Visual Studio Code. They are d
 ### Thoughts on Doing This in Xcode
 
 I'd say this is night and day. I've plowed through 8 days very quickly and the IntCode computer isn't giving me fits at all. Having fun!
+
+### And now... in Java
+
+AoC is a funny beast. For 25 days, it's an irregular ramp up in challenge toughness. Towards the end, you're in full-on mode, pushing your brain and abilities to the limit. And then... it's over. It's almost impossible to stop. And there are multiple years of AoC stars that I haven't gotten yet.
+
+In 2022, I went back to my first language, Perl. So for giggles, I thought I would go to my *second* language, Java. I have re-implemented the important parts of my utility libraries already, and now I've started the challenges. Let's see where this goes.
