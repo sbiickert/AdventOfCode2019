@@ -39,7 +39,7 @@ public class Day02 extends Solution {
 	    computer.setValue(2, 2);
 	}
 	computer.execute();
-	var result = computer.getValue(0);
+	var result = computer.getPositionValue(0);
 	return result;
     }
 
@@ -51,7 +51,7 @@ public class Day02 extends Solution {
 		computer.setValue(1, noun);
 		computer.setValue(2, verb);
 		computer.execute();
-		if (computer.getValue(0) == 19690720) {
+		if (computer.getPositionValue(0) == 19690720) {
 		    return 100 * noun + verb;
 		}
 		computer.load(input.get(0));
