@@ -27,18 +27,18 @@ public class Day03 extends Solution {
 
 	List<String> input = InputReader.readGroupedInputFile(filename, index);
 
-	var part1Solution = solvePartOne(input);
-	var part2Solution = solvePartTwo(input);
+		var wire1 = new Wire(input.get(0));
+	var wire2 = new Wire(input.get(1));
+
+	var part1Solution = solvePartOne(wire1, wire2);
+	var part2Solution = solvePartTwo(wire1, wire2);
 
 	result = new Result(Integer.toString(part1Solution), Integer.toString(part2Solution));
 
 	return result;
     }
 
-    private int solvePartOne(List<String> input) {
-	var wire1 = new Wire(input.get(0));
-	var wire2 = new Wire(input.get(1));
-
+    private int solvePartOne(Wire wire1, Wire wire2) {
 	Set<Coord2D> common = new HashSet<>(wire1.getAllCoords());
 	Set<Coord2D> s2 = new HashSet<>(wire2.getAllCoords());
 	common.retainAll(s2);
@@ -58,8 +58,24 @@ public class Day03 extends Solution {
 	return lowestManhattan;
     }
 
-    private int solvePartTwo(List<String> input) {
-	return -1;
+    private int solvePartTwo(Wire wire1, Wire wire2) {
+	Set<Coord2D> common = new HashSet<>(wire1.getAllCoords());
+	Set<Coord2D> s2 = new HashSet<>(wire2.getAllCoords());
+	common.retainAll(s2);
+
+	int lowestCombined = Integer.MAX_VALUE;
+	Coord2D closest;
+
+	for (var coord : common) {
+	    int dist1 = wire1.getFirstIndexOf(coord);
+	    int dist2 = wire2.getFirstIndexOf(coord);
+	    if (dist1 + dist2 < lowestCombined) {
+		closest = coord;
+		lowestCombined = dist1 + dist2;
+	    }
+	}
+
+	return lowestCombined + 2; // indexes start at 0, count starts at 1 * 2 wires
     }
 }
 
@@ -91,5 +107,9 @@ class Wire {
 
     public List<Coord2D> getAllCoords() {
 	return new ArrayList<Coord2D>(coords);
+    }
+    
+    public int getFirstIndexOf(Coord2D coord) {
+	return coords.indexOf(coord);
     }
 }
