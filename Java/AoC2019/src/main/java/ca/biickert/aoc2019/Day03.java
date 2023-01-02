@@ -27,7 +27,7 @@ public class Day03 extends Solution {
 
 	List<String> input = InputReader.readGroupedInputFile(filename, index);
 
-		var wire1 = new Wire(input.get(0));
+	var wire1 = new Wire(input.get(0));
 	var wire2 = new Wire(input.get(1));
 
 	var part1Solution = solvePartOne(wire1, wire2);
@@ -108,7 +108,7 @@ class Wire {
     public List<Coord2D> getAllCoords() {
 	return new ArrayList<Coord2D>(coords);
     }
-    
+
     public int getFirstIndexOf(Coord2D coord) {
 	return coords.indexOf(coord);
     }

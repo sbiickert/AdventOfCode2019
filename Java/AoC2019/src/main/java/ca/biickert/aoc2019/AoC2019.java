@@ -17,12 +17,13 @@ public class AoC2019 {
 	Input input;
 	Result result;
 	
-	var day = new Day03();
+	var day = new Day04();
 	
 	//input = Solution.tests(day).get(2);
-	input = Solution.challenge(day);
+	//input = Solution.challenge(day);
 	
-	result = day.solve(input.filename(), input.index());
+	//result = day.solve(input.filename(), input.index());
+	result = day.solve("", 0);
 	
 	System.out.println(result);
     }
