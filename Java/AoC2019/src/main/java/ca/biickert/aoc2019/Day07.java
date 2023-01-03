@@ -6,9 +6,11 @@ import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -27,7 +29,7 @@ public class Day07 extends Solution {
         List<String> input = InputReader.readGroupedInputFile(filename, index);
 
         var part1Solution = solvePartOne(input.get(0));
-        var part2Solution = solvePartTwo();
+        var part2Solution = solvePartTwo(input.get(0));
 
         result = new Result(Integer.toString(part1Solution), Integer.toString(part2Solution));
 
@@ -45,12 +47,7 @@ public class Day07 extends Solution {
 
         // Phase settings are 0 to 4, and each can only be used once
         // i.e. permutations
-        List<Integer> phases = new ArrayList<>();
-        phases.add(0);
-        phases.add(1);
-        phases.add(2);
-        phases.add(3);
-        phases.add(4);
+        List<Integer> phases = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
         var perms = Algorithms.getAllPermutations(phases);
         for (var phaseSettings : perms) {
             int inputSignal = 0;
@@ -61,7 +58,7 @@ public class Day07 extends Solution {
                 amp.load(program);
                 amp.input.add(phaseSettings.get(i));
                 amp.input.add(inputSignal);
-                amp.execute();
+                amp.run(false, true);
                 inputSignal = amp.output;
                 //System.out.print(String.format("%d -> ", inputSignal));
             }
@@ -76,8 +73,42 @@ public class Day07 extends Solution {
         return maxSignal;
     }
 
-    private int solvePartTwo() {
-        return 0;
+    private int solvePartTwo(String program) {
+
+        int maxSignal = 0;
+        List<Integer> maxPhaseSettings;
+
+        // Phase settings are 5 to 9, and each can only be used once
+        // i.e. permutations
+        List<Integer> phases = new ArrayList<>(Arrays.asList(5, 6, 7, 8, 9));
+        var perms = Algorithms.getAllPermutations(phases);
+        for (var phaseSettings : perms) {
+            List<IntCodeComputer7> amps = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                amps.add(new IntCodeComputer7(program));
+                amps.get(i).input.add(phaseSettings.get(i));
+            }
+
+            int inputSignal = 0;
+
+            while (amps.get(0).isHalted == false) {
+                for (int i = 0; i < 5; i++) {
+                    var amp = amps.get(i);
+                    amp.input.add(inputSignal);
+                    amp.run(true, false);
+                    inputSignal = amp.output;
+                    //System.out.print(String.format("%d -> ", inputSignal));
+                }
+            }
+            //System.out.println();
+            if (inputSignal > maxSignal) {
+                maxPhaseSettings = phaseSettings;
+                maxSignal = inputSignal;
+                System.out.println(maxPhaseSettings + " -> " + String.valueOf(maxSignal));
+            }
+        }
+
+        return maxSignal;
     }
 
 }
@@ -99,6 +130,7 @@ final class IntCodeComputer7 {
 
     public Queue<Integer> input = new LinkedList<>();
     public Integer output;
+    public boolean isHalted = false;
 
     public IntCodeComputer7(String programDefn) {
         this.load(programDefn);
@@ -115,9 +147,12 @@ final class IntCodeComputer7 {
         this.ptr = 0;
     }
 
-    public void execute() {
+    public void run(boolean toOutput, boolean resetPtr) {
         //System.out.println("Starting execute");
         boolean bExit = false;
+        if (resetPtr) {
+            ptr = 0;
+        }
         int input1;
         int input2;
         int outputPos;
@@ -143,7 +178,6 @@ final class IntCodeComputer7 {
                 case OPCODE_INPUT:
                     outputPos = getImmediateValue(ptr + 1);
                     Integer i = input.poll();
-                    //System.out.println("Read from input: " + i);
                     try {
                         setImmediateValue(outputPos, i);
                     } catch (NullPointerException npe) {
@@ -154,8 +188,10 @@ final class IntCodeComputer7 {
                     break;
                 case OPCODE_OUTPUT:
                     output = getValue(ptr + 1, opCode.get(1));
-                    //System.out.println("Wrote to output: " + output);
                     ptr += 2;
+                    if (toOutput) {
+                        bExit = true;
+                    }
                     break;
                 case OPCODE_JUMP_IF_TRUE:
                     input1 = getValue(ptr + 1, opCode.get(1));
@@ -189,6 +225,7 @@ final class IntCodeComputer7 {
                     break;
                 case EXIT:
                     bExit = true;
+                    isHalted = true;
                     break;
                 default:
                     System.out.println(String.format("Unexpected opcode %d", getPositionValue(ptr)));
@@ -226,33 +263,21 @@ final class IntCodeComputer7 {
 
     private List<Integer> parseOpCode(int value) {
         List<Integer> result = new ArrayList<>();
-        var digits = intToDigits(value);
-        if (digits.size() == 1) {
-            // Just a single-digit opcode, no parameter mode info
-            result.add(digits.get(0));
-            for (int i = 1; i <= 3; i++) {
-                result.add(0);
-            }
-        } else {
-            var ones = digits.get(digits.size() - 1);
-            var tens = digits.get(digits.size() - 2);
-            int opCode = ones + (10 * tens);
-            result.add(opCode);
-            for (int i = 3; i < 6; i++) {
-                result.add((digits.size() - i >= 0) ? digits.get(digits.size() - i) : 0);
-            }
+        var digits = intToDigits(value, 5);
+        var ones = digits.remove(digits.size() - 1);
+        var tens = digits.remove(digits.size() - 1);
+        int opCode = ones + (10 * tens);
+        result.add(opCode);
+        while (!digits.isEmpty()) {
+            result.add(digits.remove(digits.size() - 1));
         }
         return result;
     }
 
-    public static List<Integer> intToDigits(int i) {
-        return intToDigits(i, 0);
-    }
-
-    public static List<Integer> intToDigits(int i, int padToLength) {
+    private List<Integer> intToDigits(int i, int padToLength) {
         var s = String.format("%05d", i);
         List<String> chars = Arrays.asList(s.split(""));
-        return chars.stream().map(Integer::valueOf).toList();
+        return new ArrayList<Integer>(chars.stream().map(Integer::valueOf).toList()); // Mutable
     }
 
     public int getProgramLength() {
