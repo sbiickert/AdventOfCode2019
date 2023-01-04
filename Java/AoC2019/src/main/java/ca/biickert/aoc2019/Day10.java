@@ -12,12 +12,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 /**
  *
  * @author sjb
  */
 public class Day10 extends Solution {
+
     private Coord2D monitoringStationLocation;
 
     public Day10() {
@@ -43,7 +45,7 @@ public class Day10 extends Solution {
 	grid.print();
 
 	int maxVisible = 0;
-	Coord2D best = new Coord2D(-1,-1);
+	Coord2D best = new Coord2D(-1, -1);
 	List<Coord2D> asteroids = grid.getCoords();
 
 	for (var location : asteroids) {
@@ -60,29 +62,53 @@ public class Day10 extends Solution {
     }
 
     private String solvePartTwo(List<String> input) {
+	String result = "";
 	var grid = parseGrid(input);
-	return "";
+	int count = 0;
+	var coords = grid.getCoords();
+	var losMap = generateLineOfSightMap(monitoringStationLocation, coords);
+	while (coords.size() > 1) { // Will only be left with monitoringStationLocation
+	    for (var angle : losMap.keySet()) { // sorted
+		//System.out.println(angle);
+		var destroyedAsteroid = losMap.get(angle);
+		count++;
+		//System.out.println(String.format("%d: destroyed coord at %s", count, destroyedAsteroid));
+		coords.remove(destroyedAsteroid);
+		if (count == 200) {
+		    result = String.valueOf(100 * destroyedAsteroid.getX() + destroyedAsteroid.getY());
+		}
+	    }
+	    losMap = generateLineOfSightMap(monitoringStationLocation, coords);
+	}
+	return result;
     }
-    
+
     private Collection<Coord2D> getLineOfSightCoords(Coord2D origin, List<Coord2D> coords) {
-	Map<Double, Coord2D> los = new HashMap<>();
-	
+	return generateLineOfSightMap(origin, coords).values();
+    }
+
+    private Map<Double, Coord2D> generateLineOfSightMap(Coord2D origin, List<Coord2D> coords) {
+	Map<Double, Coord2D> los = new java.util.TreeMap<>();
+
 	for (var c : coords) {
-	    if (origin.equals(c)) { continue; }
+	    if (origin.equals(c)) {
+		continue;
+	    }
 	    var delta = origin.delta(c);
-	    double angle = Math.atan2(delta.getY(), delta.getX());
+	    double radians = Math.atan2(delta.getY(), delta.getX());
+	    double angle = radians * (180/Math.PI);
+	    angle += 90; // Make up zero
+	    if (angle < 0) { angle += 360; } // All angles are positive
 	    if (los.containsKey(angle)) {
 		var dist = origin.manhattanDistanceTo(los.get(angle));
 		if (origin.manhattanDistanceTo(c) < dist) {
 		    los.replace(angle, c);
 		}
-	    }
-	    else {
+	    } else {
 		los.put(angle, c);
 	    }
 	}
-	
-	return los.values();
+	return los;
     }
 
     private Grid2D parseGrid(List<String> input) {
