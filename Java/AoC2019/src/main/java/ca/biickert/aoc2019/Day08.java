@@ -3,7 +3,6 @@ package ca.biickert.aoc2019;
 import ca.biickert.aoc2019.util.InputReader;
 import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +33,6 @@ public class Day08 extends Solution {
     }
 
     private int solvePartOne(SpaceImage image) {
-	int layerIndex = 0;
 	int least = Integer.MAX_VALUE;
 	int result = 0;
 
@@ -57,7 +55,6 @@ public class Day08 extends Solution {
 		}
 	    }
 	    if (zeroCount < least) {
-		layerIndex = l;
 		least = zeroCount;
 		result = oneCount * twoCount;
 	    }
