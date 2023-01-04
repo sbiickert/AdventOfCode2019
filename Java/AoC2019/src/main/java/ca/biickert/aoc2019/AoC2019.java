@@ -17,9 +17,9 @@ public class AoC2019 {
 	Input input;
 	Result result;
 	
-	var day = new Day07();
+	var day = new Day08();
 	
-//	input = Solution.tests(day).get(2);
+//	input = Solution.tests(day).get(0);
 	input = Solution.challenge(day);
 	
 	result = day.solve(input.filename(), input.index());
