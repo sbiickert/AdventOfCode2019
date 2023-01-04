@@ -26,22 +26,25 @@ public class Day09 extends Solution {
 	List<String> input = InputReader.readGroupedInputFile(filename, index);
 
 	var part1Solution = solvePartOne(input.get(0));
-	var part2Solution = solvePartTwo();
+	var part2Solution = solvePartTwo(input.get(0));
 
-	result = new Result(Integer.toString(part1Solution), Integer.toString(part2Solution));
+	result = new Result(part1Solution, part2Solution);
 
 	return result;
     }
 
-    private int solvePartOne(String program) {
+    private String solvePartOne(String program) {
 	var computer = new IntCodeComputer9(program);
 	computer.input.add(1L);
 	computer.run(false, true);
-	return 0;
+	return Long.toString(computer.output);
     }
 
-    private int solvePartTwo() {
-	return 0;
+    private String solvePartTwo(String program) {
+	var computer = new IntCodeComputer9(program);
+	computer.input.add(2L);
+	computer.run(false, true);
+	return Long.toString(computer.output);
     }
 
 }

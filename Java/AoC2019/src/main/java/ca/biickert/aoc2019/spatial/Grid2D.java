@@ -122,6 +122,26 @@ public class Grid2D {
 	return result;
     }
     
+    public List<Coord2D> getLineOfSightCoords(Coord2D c) {
+	List<Coord2D> result = new ArrayList<>();
+	
+	for (var offset : getOffsets()) {
+	    Coord2D losCoord = c.add(offset);
+	    while (true) {
+		if (getExtent().contains(losCoord) == false) {
+		    break;
+		}
+		if (get(losCoord).equals(defaultValue) == false) {
+		    result.add(losCoord);
+		    break;
+		}
+		losCoord = losCoord.add(offset);
+	    }
+	}
+	
+	return result;
+    }
+    
     public void print() {
 	print(false);
     }
@@ -152,8 +172,3 @@ public class Grid2D {
     }
 }
 
-enum AdjacencyRule {
-    ROOK,
-    BISHOP,
-    QUEEN
-}
