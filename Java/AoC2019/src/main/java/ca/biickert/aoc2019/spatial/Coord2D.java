@@ -8,9 +8,9 @@ import java.util.Objects;
  * @author sjb
  */
 public class Coord2D implements Cloneable {
-    private int x;
-    private int y;
-    private int hashCode;
+    protected int x;
+    protected int y;
+    protected int hashCode;
 
     public Coord2D(int x, int y) {
 	this.x = x;
