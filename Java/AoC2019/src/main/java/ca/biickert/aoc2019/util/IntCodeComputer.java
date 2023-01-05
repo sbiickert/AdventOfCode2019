@@ -44,6 +44,8 @@ final public class IntCodeComputer {
 	this.program = new ArrayList(program);
 	this.ptr = 0;
 	this.relativeBase = 0;
+	this.isHalted = false;
+	this.output = 0L;
     }
 
     public void run(boolean toOutput, boolean resetPtr) {

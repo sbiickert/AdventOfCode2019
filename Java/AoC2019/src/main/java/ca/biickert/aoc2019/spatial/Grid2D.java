@@ -64,6 +64,10 @@ public class Grid2D {
     public void clear(Coord2D key) {
 	data.remove(key);
     }
+    
+    public void clearAll() {
+	data.clear();
+    }
 
     public Extent2D getExtent() {
 	try {
