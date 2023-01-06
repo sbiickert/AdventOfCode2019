@@ -27,7 +27,7 @@ public class Day14 extends Solution {
 	var recipes = parseRecipes(input);
 
 	var part1Solution = solvePartOne(recipes);
-	var part2Solution = solvePartTwo();
+	var part2Solution = solvePartTwo(recipes);
 
 	result = new Result(part1Solution, part2Solution);
 
@@ -36,37 +36,50 @@ public class Day14 extends Solution {
 
     private String solvePartOne(Map<String, ChemicalFormula> recipes) {
 	stockpile = new HashMap<>();
+	stockpile.put("ORE", 1000000000000L);
 
 	ChemicalQuantity fuel = new ChemicalQuantity("FUEL", 1);
 	generateChemical(fuel, recipes);
 
-	return String.valueOf(oreConsumed);
+	return String.valueOf(1000000000000L - stockpile.get("ORE"));
     }
 
-    private String solvePartTwo() {
-	return "";
+    private String solvePartTwo(Map<String, ChemicalFormula> recipes) {
+	stockpile = new HashMap<>();
+	stockpile.put("ORE", 1000000000000L);
+
+	ChemicalQuantity fuel = new ChemicalQuantity("FUEL", 1);
+	int fuelGenerated = 0;
+	while (generateChemical(fuel, recipes)) {
+	    fuelGenerated++;
+	    stockpile.put("FUEL", 0L);
+	    if (fuelGenerated % 1000 == 0) {
+		System.out.println(fuelGenerated);
+	    }
+	}
+
+	return String.valueOf(fuelGenerated);
     }
 
-    private int oreConsumed = 0;
-    private Map<String, Integer> stockpile;
-    
-    private int getStockpileLevel(String chemical) {
+    private Map<String, Long> stockpile;
+
+    private long getStockpileLevel(String chemical) {
 	if (stockpile.containsKey(chemical) == false) {
 	    return 0;
 	}
 	return stockpile.get(chemical);
     }
-    
+
     private void addToStockpile(String chemical, int amount) {
-	int oldLevel = getStockpileLevel(chemical);
-	int newLevel = oldLevel + amount;
+	long oldLevel = getStockpileLevel(chemical);
+	long newLevel = oldLevel + amount;
 	//System.out.println(String.format("ADD %d %s to %d -> %d", amount, chemical, oldLevel, newLevel));
 	stockpile.put(chemical, newLevel);
     }
-    
+
     private void takeFromStockpile(String chemical, int amount) {
-	int oldLevel = getStockpileLevel(chemical);
-	int newLevel = oldLevel - amount;
+	long oldLevel = getStockpileLevel(chemical);
+	long newLevel = oldLevel - amount;
 	//System.out.println(String.format("TAKE %d %s from %d -> %d", amount, chemical, oldLevel, newLevel));
 	stockpile.put(chemical, newLevel);
 	if (stockpile.get(chemical) < 0) {
@@ -75,26 +88,30 @@ public class Day14 extends Solution {
 	}
     }
 
-    private void generateChemical(ChemicalQuantity cq,
+    private boolean generateChemical(ChemicalQuantity cq,
 	    Map<String, ChemicalFormula> recipes) {
 	//System.out.println("Generating " + cq.amount() + " " + cq.chemical());
 	ChemicalFormula cf = recipes.get(cq.chemical());
+	boolean success = true;
 	while (getStockpileLevel(cq.chemical()) < cq.amount()) {
 	    for (var input : cf.inputs()) {
-		int needed = input.amount() - getStockpileLevel(input.chemical());
+		long needed = (long) input.amount() - getStockpileLevel(input.chemical());
+		//System.out.println("Need " + needed + " " + input.chemical());
 		if (needed > 0) {
-		    //System.out.println("Need " + needed + " " + input.chemical());
 		    if (input.chemical().equals("ORE")) {
-			oreConsumed += input.amount();
-			addToStockpile("ORE", needed);
-		    } else {
-			generateChemical(new ChemicalQuantity(input.chemical(), input.amount()), recipes);
+			// We're out of ORE!
+			return false;
+		    }
+		    success = success && generateChemical(new ChemicalQuantity(input.chemical(), input.amount()), recipes);
+		    if (!success) {
+			return success;
 		    }
 		}
 		takeFromStockpile(input.chemical(), input.amount());
 	    }
 	    addToStockpile(cq.chemical(), cf.product().amount());
 	}
+	return success;
     }
 
     private Map<String, ChemicalFormula> parseRecipes(List<String> input) {
