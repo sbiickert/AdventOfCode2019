@@ -45,7 +45,7 @@ public class Day15 extends Solution {
 	Coord2D oxygenLocation = map.getCoordsWithValue(OXYGEN).get(0);
 
 	var part1Solution = solvePartOne(loc, oxygenLocation);
-	var part2Solution = solvePartTwo();
+	var part2Solution = solvePartTwo(oxygenLocation);
 
 	result = new Result(part1Solution, part2Solution);
 
@@ -76,14 +76,30 @@ public class Day15 extends Solution {
 	    toVisit = nextStep;
 	}
 
+	return String.valueOf(step);
+    }
+
+    private String solvePartTwo(Coord2D oxygenLocation) {
+	int step = 0;
+	List<Coord2D> toVisit = new ArrayList<>();
+	toVisit.add(oxygenLocation);
+	while (toVisit.size() > 0) {
+	    step++;
+	    List<Coord2D> nextStep = new ArrayList<>();
+	    for (var loc : toVisit) {
+		for (var n : map.getAdjacent(loc)) {
+		    if (map.get(n).equals(EMPTY) || map.get(n).equals(PATH)) {
+			nextStep.add(n);
+			map.set(n, step % 10);
+		    }
+		}
+	    }
+	    toVisit = nextStep;
+	}
 	
-
-	return String.valueOf(step+1);
-    }
-
-    private String solvePartTwo() {
-	return "";
-    }
+	//map.print();
+	return String.valueOf(step-1); // While loop does one more iteration after oxygen reaches last space
+   }
 
     private void mapSpace(RepairDroid droid, Coord2D location) {
 	for (var dir : RepairDroid.allDirections) {
