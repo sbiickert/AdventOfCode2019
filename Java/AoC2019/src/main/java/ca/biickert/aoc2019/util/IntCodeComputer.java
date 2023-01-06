@@ -216,7 +216,27 @@ final public class IntCodeComputer {
 	return program.size();
     }
 
-    public void printState() {
+    public void printProgram() {
 	System.out.println(String.join(",", program.stream().map(String::valueOf).toList()));
     }
+    
+    public IntCodeComputerState saveState() {
+	var state = new IntCodeComputerState(new ArrayList<>(program),
+		ptr,
+		relativeBase,
+		new ArrayList<Long>(input.stream().toList()),
+		output,
+		isHalted);
+	return state;
+    }
+    
+    public void restoreState(IntCodeComputerState state) {
+	program = new ArrayList<>(state.program());
+	ptr = state.ptr();
+	relativeBase = state.relativeBase();
+	input = new LinkedList<>(state.input());
+	output = state.output();
+	isHalted = state.isHalted();
+    }
 }
+
