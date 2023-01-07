@@ -4,7 +4,6 @@ import ca.biickert.aoc2019.util.InputReader;
 import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class Day16 extends Solution {
 	List<String> input = InputReader.readGroupedInputFile(filename, index);
 
 	var part1Solution = solvePartOne(input.get(0));
-	var part2Solution = solvePartTwo();
+	var part2Solution = solvePartTwo(input.get(0));
 
 	result = new Result(part1Solution, part2Solution);
 
@@ -42,13 +41,30 @@ public class Day16 extends Solution {
 	return result;
     }
 
-    private String solvePartTwo() {
-	return "";
+    private String solvePartTwo(String input) {
+	String bigInput = input.repeat(10000);
+	int offset = Integer.parseInt(input.substring(0, 7));
+	var output = FFT.cheat(FFT.stringToIntegerList(bigInput), offset, 100);
+	String result = "";
+	for (int i = 0; i < 8; i++) {
+	    result += String.valueOf(output.get(i));
+	}
+	
+	return result;
     }
 
 }
 
 class FFT {
+    
+    static List<Integer> stringToIntegerList(String numbers) {
+	List<Integer> result = new ArrayList<>();
+	for (String s : numbers.split("")) {
+	    result.add(Integer.valueOf(s));
+	}
+	return result;
+    }
+    
     List<Integer> pattern;
     List<Integer> signal;
     
@@ -58,10 +74,7 @@ class FFT {
 	pattern.add(1);
 	pattern.add(0);
 	pattern.add(-1);
-	signal = new ArrayList<>();
-	for (String s : numbers.split("")) {
-	    signal.add(Integer.valueOf(s));
-	}
+	signal = stringToIntegerList(numbers);
     }
     
     public List<Integer> calculate(int phaseCount) {
@@ -93,4 +106,29 @@ class FFT {
 	}
 	return output;
     }
+    
+        
+    public static List<Integer> cheat(List<Integer> signal, int offset, int phaseCount) {
+	List<Integer> cache = new ArrayList<>(signal.size());
+	for (int i = 0; i < signal.size(); i++) { cache.add(0); }
+	
+	for (int phase = 0; phase < phaseCount; phase++) {
+	    long sum = 0;
+	    for (int k = 0; k < signal.size(); k++) {
+		sum += signal.get(k);
+	    }
+	    
+	    for (int i = offset; i < signal.size(); i++) {
+		cache.set(i, (int)(sum % 10));
+		sum -= signal.get(i);
+	    }
+	    
+	    List<Integer> temp = signal;
+	    signal = cache;
+	    cache = temp;
+	}
+	
+	return signal.subList(offset, offset + 8);
+    }
+
 }
