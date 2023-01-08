@@ -3,6 +3,7 @@ This is the IntCodeComputer that was "finished" on Day 9.
 */
 package ca.biickert.aoc2019.util;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -47,6 +48,15 @@ final public class IntCodeComputer {
 	this.isHalted = false;
 	this.output = 0L;
     }
+        
+    public void inputAscii(String s) {
+	s += "\n";
+	byte[] bytes = s.getBytes(StandardCharsets.US_ASCII);
+	for (var b : bytes) {
+	    input.add((long)b);
+	}
+    }
+
 
     public void run(boolean toOutput, boolean resetPtr) {
 	//System.out.println("Starting execute");
@@ -185,7 +195,7 @@ final public class IntCodeComputer {
 	setImmediateValue(position + relativeBase, value);
     }
 
-    private void setImmediateValue(int position, long value) {
+    public void setImmediateValue(int position, long value) {
 	//System.out.println(String.format("Wrote %d to position %d", value, position));
 	while (position >= program.size()) {
 	    program.add(0L);

@@ -115,8 +115,8 @@ public class Grid2D {
 	try {
 	    if (rule == AdjacencyRule.ROOK || rule == AdjacencyRule.QUEEN) {
 		coords.add((Coord2D)NORTH.clone());
-		coords.add((Coord2D)SOUTH.clone());
 		coords.add((Coord2D)EAST.clone());
+		coords.add((Coord2D)SOUTH.clone());
 		coords.add((Coord2D)WEST.clone());
 	    }
 	    if (rule == AdjacencyRule.BISHOP || rule == AdjacencyRule.QUEEN) {
