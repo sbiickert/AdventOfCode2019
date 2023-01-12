@@ -142,6 +142,12 @@ public class Grid2D {
 	return result;
     }
 
+    public List<Coord2D> getAdjacentWithValue(Coord2D c, Object value) {
+	List<Coord2D> result = getAdjacent(c);
+	result = result.stream().filter(n -> get(n).equals(value)).toList();
+	return result;
+    }
+
     public List<Coord2D> getLineOfSightCoords(Coord2D c) {
 	List<Coord2D> result = new ArrayList<>();
 
@@ -163,10 +169,14 @@ public class Grid2D {
     }
 
     public void print() {
-	print(false);
+	print(new HashMap<>(), false);
+    }
+    
+    public void print(Map<Coord2D, String> overlay) {
+	print(overlay, false);
     }
 
-    public void print(boolean flipY) {
+    public void print(Map<Coord2D, String> overlay, boolean flipY) {
 	var ext = getExtent();
 	int startRow = ext.getYMin();
 	int endRow = ext.getYMax();
@@ -182,8 +192,13 @@ public class Grid2D {
 	while (true) {
 	    String line = "";
 	    for (var col = ext.getXMin(); col <= ext.getXMax(); col++) {
-		var value = data.get(new Coord2D(col, row));
-		line += (value == null) ? defaultValue : value;
+		Coord2D c = new Coord2D(col, row);
+		var value = data.get(c);
+		if (overlay.containsKey(c)) {
+		    value = overlay.get(c);
+		}
+		value = (value == null) ? defaultValue : value;
+		line += value;
 	    }
 	    System.out.println(line);
 	    if (row == endRow) {
