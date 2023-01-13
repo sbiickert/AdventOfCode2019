@@ -28,4 +28,11 @@ public class Algorithms {
         return returnValue;
     }
 
+    public static String reverseString(String s) {
+	String r = "";
+	for (int i = 0; i < s.length(); i++) {
+	    r = s.charAt(0) + r;
+	}
+	return r;
+    }
 }

@@ -3,6 +3,7 @@ package ca.biickert.aoc2019;
 import ca.biickert.aoc2019.spatial.AdjacencyRule;
 import ca.biickert.aoc2019.spatial.Coord2D;
 import ca.biickert.aoc2019.spatial.Grid2D;
+import ca.biickert.aoc2019.util.Algorithms;
 import ca.biickert.aoc2019.util.InputReader;
 import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
@@ -13,6 +14,7 @@ import java.util.TreeSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
@@ -45,127 +47,40 @@ public class Day18 extends Solution {
     }
 
     private String solvePartOne(NeptuneVault vault) {
-	Set<String> lockedDoors = new TreeSet<>();
-	for (var door : vault.getDoors().values()) {
-	    lockedDoors.add(door.name);
+	Key start = vault.getKeys().get("@");
+	start.costToReach = 0;
+	Set<String> unvisited = new HashSet<>();
+	for (var k : vault.getKeys().keySet()) {
+	    unvisited.add(k);
 	}
-	Set<String> keysRemaining = new TreeSet<>();
-	for (var key : vault.getKeys().values()) {
-	    keysRemaining.add(key.name);
-	}
-	List<String> keysInPossession = new ArrayList<>();
-
-	int shortestPath = getShortestPathToKeys(vault,
-		null,
-		lockedDoors,
-		keysRemaining,
-		keysInPossession,
-		0);
-	return String.valueOf(shortestPath);
-    }
-
-    private Map<String, Integer> _cache = new HashMap<>();
-    private int _best = 200;//Integer.MAX_VALUE;
-
-    private int getShortestPathToKeys(NeptuneVault vault,
-	    String atMarkedLocation,
-	    Set<String> lockedDoors,
-	    Set<String> keysRemaining,
-	    List<String> keysInPossession,
-	    int cost) {
-
-	String cacheKey = atMarkedLocation + "|"
-		+ lockedDoors.toString() + "|"
-		+ keysRemaining.toString() + "|"
-		+ keysInPossession.toString();
-
-	if (_cache.containsKey(cacheKey)) {
-	    return _cache.get(cacheKey);
-	}
-
-	int shortest = Integer.MAX_VALUE;
-
-	Set<String> destinations = new HashSet<>();
-	for (var keyName : keysInPossession) {
-	    if (lockedDoors.contains(keyName.toUpperCase())) {
-		destinations.add(vault.getKeys().get(keyName).getDoorName());
+	
+	PriorityQueue<String> working = new PriorityQueue<String>((s1, s2) -> vault.getKeys().get(s1).costToReach - vault.getKeys().get(s2).costToReach);
+	working.add(start.name);
+	
+	while (!unvisited.isEmpty()) {
+	    String currentName = working.remove();
+	    Key current = vault.getKeys().get(currentName);
+	    Door currentDoor = vault.getDoors().get(current.getDoorName());
+	    if (currentDoor != null) {
+		currentDoor.isLocked = false;
 	    }
-	}
-	for (var keyName : keysRemaining) {
-	    destinations.add(keyName);
-	}
-
-	if (destinations.isEmpty()) {
-	    _cache.put(cacheKey, 0);
-	    if (cost < _best) {
-		_best = cost;
-	    }
-	    System.out.println(cost + " " + keysInPossession);
-	    return 0;
-	}
-
-	Coord2D start;
-	if (atMarkedLocation != null) {
-	    if (vault.getDoors().containsKey(atMarkedLocation)) {
-		start = vault.getDoors().get(atMarkedLocation).position;
-	    } else {
-		start = vault.getKeys().get(atMarkedLocation).position;
-	    }
-	} else {
-	    start = vault.getUserStartPosition();
-	}
-
-	// Can either pick up an accessible key or an unlockable door
-	int temp = 0; // for debugging
-	for (var destination : destinations) {
-	    int distance = Integer.MAX_VALUE;
-	    Coord2D end;
-	    boolean isDoor = true;
-	    if (vault.getDoors().containsKey(destination)) {
-		end = vault.getDoors().get(destination).position;
-	    } else {
-		end = vault.getKeys().get(destination).position;
-		isDoor = false;
-	    }
-
-	    distance = vault.getDistance(start, end, lockedDoors);
-
-	    if (distance != -1) {
-		// Can get to destination
-		// But does that put us over the best distance so far?
-		if (cost + distance >= _best) {
-		    _cache.put(cacheKey, Integer.MAX_VALUE);
-		    return Integer.MAX_VALUE;
+	    
+	    List<Path> paths = vault.getOpenPathsFrom(current);
+	    for (var p : paths) {
+		int costTo = current.costToReach + p.distance;
+		if (p.to.costToReach > costTo) {
+		    p.to.costToReach = costTo;
+		    working.add(p.to.name);
 		}
-
-		var newKeysRemaining = new TreeSet<>(keysRemaining);
-		var newLockedDoors = new TreeSet<>(lockedDoors);
-		var newKeysInPossession = new ArrayList<>(keysInPossession);
-		if (isDoor) {
-		    newLockedDoors.remove(destination);
-		} else {
-		    newKeysRemaining.remove(destination);
-		    newKeysInPossession.add(destination);
-		}
-
-		temp = getShortestPathToKeys(vault, destination,
-			newLockedDoors, newKeysRemaining, newKeysInPossession,
-			cost + distance);
-
-		distance = (temp == Integer.MAX_VALUE) ? temp : distance + temp;
-		if (distance > _best) {
-		    distance = Integer.MAX_VALUE;
-		}
-	    } else {
-		distance = Integer.MAX_VALUE;
 	    }
-	    //System.out.println("  ".repeat(depth) + atMarkedLocation + " to " + destination + " = " + distance);
-
-	    shortest = Math.min(shortest, distance);
+	    
+	    unvisited.remove(current.name);
 	}
-	//System.out.println("  ".repeat(depth) + "Returning " + shortest);
-	_cache.put(cacheKey, shortest);
-	return shortest;
+	
+	var result = vault.getKeys().values().stream().sorted((k1,k2) -> k1.costToReach - k2.costToReach).toList();
+	System.out.println(result);
+	
+	return String.valueOf(result.get(result.size()-1).costToReach);
     }
 
     private String solvePartTwo() {
@@ -180,7 +95,7 @@ class NeptuneVault {
     private final Map<String, Key> keys = new HashMap<>();
 
     private Coord2D userStartPosition;
-    private Map<String, Integer> _cachedDistances = new TreeMap();
+    private List<Path> _cachedPaths = new ArrayList();
 
     public NeptuneVault(List<String> input) {
 	for (int r = 0; r < input.size(); r++) {
@@ -193,6 +108,7 @@ class NeptuneVault {
 		} else {
 		    if (chars[c].equals("@")) {
 			userStartPosition = coord;
+			keys.put(chars[c], new Key(chars[c], coord)); // Calling it a key for simplicity
 		    } else if (chars[c].equals(chars[c].toUpperCase())) {
 			doors.put(chars[c], new Door(chars[c], coord));
 		    } else {
@@ -202,7 +118,7 @@ class NeptuneVault {
 		}
 	    }
 	}
-	cacheDistances();
+	cachePaths();
     }
 
     public Grid2D getMaze() {
@@ -220,30 +136,59 @@ class NeptuneVault {
     public Coord2D getUserStartPosition() {
 	return userStartPosition;
     }
-
-    private void cacheDistances() {
-	List<String> allNames = new ArrayList<>(keys.keySet());
-	allNames.addAll(doors.keySet());
-
-	for (int i = 0; i < allNames.size() - 1; i++) {
-	    for (int j = i + 1; j < allNames.size(); j++) {
-		Coord2D c1;
-		Coord2D c2;
-		if (keys.containsKey(allNames.get(i))) {
-		    c1 = keys.get(allNames.get(i)).position;
-		} else {
-		    c1 = doors.get(allNames.get(i)).position;
-		}		    
-		if (keys.containsKey(allNames.get(j))) {
-		    c2 = keys.get(allNames.get(j)).position;
-		} else {
-		    c2 = doors.get(allNames.get(j)).position;
-		}		    
-		int distance = getDistance(c1, c2, null);
-		_cachedDistances.put(allNames.get(i) + allNames.get(j), distance);
-		_cachedDistances.put(allNames.get(j) + allNames.get(i), distance);
+    
+//    public Key getLastKey() {
+//	Set<String> keysNoDoors = new TreeSet<>();
+//	for (var keyName : keys.keySet()) {
+//	    if (keyName.equals("@") == false && doors.containsKey(keyName.toUpperCase()) == false) {
+//		keysNoDoors.add(keyName);
+//	    }
+//	}
+//	var lastKeyName = (String)keysNoDoors.toArray()[keysNoDoors.size()-1];
+//	return keys.get(lastKeyName);
+//    }
+    
+    public List<Path> getOpenPathsFrom(Key k) {
+	List<Path> result = new ArrayList<>();
+	for (var path : _cachedPaths) {
+	    if (path.from.equals(k) && path.isOpen()) {
+		result.add(path);
 	    }
 	}
+	return result;
+    }
+
+    private void cachePaths() {
+	List<String> keyNames = new ArrayList<>(keys.keySet());
+	for (int i = 0; i < keyNames.size() - 1; i++) {
+	    Key k1 = keys.get(keyNames.get(i));
+	    for (int j = i + 1; j < keyNames.size(); j++) {
+		Key k2 = keys.get(keyNames.get(j));
+		int distance = getDistance(k1.position, k2.position, null);
+		Path path = new Path(k1, k2, distance);
+
+		// Find locked doors en route
+		path.doors.addAll(getDoorsBetween(k1.position, k2.position));
+		_cachedPaths.add(path);
+		var rPath = path.reversed();
+		_cachedPaths.add(rPath);
+	    }
+	}
+    }
+
+    private List<Door> getDoorsBetween(Coord2D from, Coord2D to) {
+	List<Door> result = new ArrayList<>();
+	Set<String> locked = new HashSet<>();
+	for (var doorName : getDoors().keySet()) {
+	    locked.clear();
+	    locked.add(doorName);
+	    int distance = getDistance(from, to, locked);
+	    if (distance == -1) {
+		// Having this door closed blocked path from k1 to k2
+		result.add(doors.get(doorName));
+	    }
+	}
+	return result;
     }
 
     public int getDistance(Coord2D from, Coord2D to, Set<String> lockedDoors) {
@@ -310,10 +255,12 @@ class Door {
 
     String name;
     Coord2D position;
+    boolean isLocked;
 
     public Door(String name, Coord2D position) {
 	this.name = name;
 	this.position = position;
+	this.isLocked = true;
     }
 
     public String getKeyName() {
@@ -325,6 +272,7 @@ class Key {
 
     String name;
     Coord2D position;
+    int costToReach = Integer.MAX_VALUE;
 
     public Key(String name, Coord2D position) {
 	this.name = name;
@@ -333,5 +281,61 @@ class Key {
 
     public String getDoorName() {
 	return name.toUpperCase();
+    }
+   
+    @Override
+    public String toString() {
+	return "Key " + name + " cost: " + costToReach;
+    }
+}
+
+class Path {
+
+    Key from;
+    Key to;
+    int distance;
+    List<Door> doors = new ArrayList<>();
+
+    public Path(Key fromKey, Key toKey, int distance) {
+	this.from = fromKey;
+	this.to = toKey;
+	this.distance = distance;
+    }
+
+    public String getName() {
+	return from.name + to.name;
+    }
+
+    public Key getFrom() {
+	return from;
+    }
+
+    public Key getTo() {
+	return to;
+    }
+
+    public int getDistance() {
+	return distance;
+    }
+
+    public List<Door> getDoors() {
+	return doors;
+    }
+
+    public boolean isOpen() {
+	boolean result = true;
+	for (var door : doors) {
+	    result = result && door.isLocked == false;
+	}
+	return result;
+    }
+    
+    public Path reversed() {
+	return new Path(to, from, distance);
+    }
+    
+    @Override
+    public String toString() {
+	return "Path from " + from.name + " to " + to.name;
     }
 }
