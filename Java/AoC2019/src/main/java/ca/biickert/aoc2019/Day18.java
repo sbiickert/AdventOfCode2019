@@ -31,11 +31,21 @@ public class Day18 extends Solution {
 
 	List<String> input = InputReader.readGroupedInputFile(filename, index);
 
-	NeptuneVault vault = new NeptuneVault(input);
+	NeptuneVault vault;// = new NeptuneVault(input, false);
+	//vault.print();
+
+	var part1Solution = "";//solvePartOne(vault);
+
+	if (input.size() > 50) {
+	    // Challenge input. Need to replace some characters
+	    input.set(39, input.get(39).substring(0, 39) + "@#@" + input.get(39).substring(42));
+	    input.set(40, input.get(40).substring(0, 39) + "###" + input.get(40).substring(42));
+	    input.set(41, input.get(41).substring(0, 39) + "@#@" + input.get(41).substring(42));
+	}
+	vault = new NeptuneVault(input, true);
 	vault.print();
 
-	var part1Solution = solvePartOne(vault);
-	var part2Solution = solvePartTwo();
+	var part2Solution = solvePartTwo(vault);
 
 	result = new Result(part1Solution, part2Solution);
 
@@ -48,13 +58,15 @@ public class Day18 extends Solution {
 	List<String> possessedKeys = new ArrayList<>();
 	possessedKeys.add("@");
 
+	_shortestPathLength = Key.BIG;
+	_memo = new HashMap<>();
 	int shortest = findShortestPathLength(vault, start, possessedKeys, 0);
 
 	return String.valueOf(shortest);
     }
 
-    private int _shortestPathLength = Key.BIG; 
-    private Map<String,Integer> _memo = new HashMap<>();
+    private int _shortestPathLength = Key.BIG;
+    private Map<String, Integer> _memo;
 
     private int findShortestPathLength(NeptuneVault v, Key keyFrom, List<String> possessedKeys, int cost) {
 	String memoKey = keyFrom.name + "," + cost + "," + String.join("", possessedKeys.stream().sorted().toList());
@@ -62,7 +74,7 @@ public class Day18 extends Solution {
 	    //System.out.println(memoKey);
 	    return _memo.get(memoKey);
 	}
-	
+
 	List<Path> paths = v.getOpenPathsFrom(keyFrom, possessedKeys);
 	if (paths.isEmpty()) {
 	    if (cost < _shortestPathLength) {
@@ -70,8 +82,7 @@ public class Day18 extends Solution {
 		_shortestPathLength = cost;
 	    }
 	    return cost;
-	}
-	else if (cost >= _shortestPathLength) {
+	} else if (cost >= _shortestPathLength) {
 	    _memo.put(memoKey, Key.BIG);
 	    return Key.BIG;
 	}
@@ -89,8 +100,61 @@ public class Day18 extends Solution {
 	return shortest;
     }
 
-    private String solvePartTwo() {
-	return "";
+    private String solvePartTwo(NeptuneVault vault) {
+	List<Key> robots = new ArrayList<>();
+	List<String> possessedKeys = new ArrayList<>();
+	for (int i = 1; i <= 4; i++) {
+	    robots.add(vault.getKeys().get(String.valueOf(i)));
+	    possessedKeys.add(String.valueOf(i));
+	}
+
+	_shortestPathLength = Key.BIG;
+	_memo = new HashMap<>();
+	int shortest = findShortestPathLength2(vault, robots, possessedKeys, 0);
+
+	return String.valueOf(shortest);
+    }
+
+    private int findShortestPathLength2(NeptuneVault v, List<Key> robots, List<String> possessedKeys, int cost) {
+	String memoKey = String.join("", robots.stream().map(r -> r.name).toList()) + "," + cost + "," + String.join("", possessedKeys.stream().sorted().toList());
+	if (_memo.containsKey(memoKey)) {
+	    //System.out.println(memoKey);
+	    return _memo.get(memoKey);
+	}
+
+	List<Path> paths = new ArrayList<>();
+	for (var robot : robots) {
+	    paths.addAll(v.getOpenPathsFrom(robot, possessedKeys));
+	}
+	if (paths.isEmpty()) {
+	    if (cost < _shortestPathLength) {
+		System.out.println(cost + ": " + possessedKeys);
+		_shortestPathLength = cost;
+	    }
+	    return cost;
+	} else if (cost >= _shortestPathLength) {
+	    _memo.put(memoKey, Key.BIG);
+	    return Key.BIG;
+	}
+
+	int shortest = Key.BIG;
+	for (var p : paths) {
+	    List<String> newPossessedKeys = new ArrayList<>(possessedKeys);
+	    newPossessedKeys.add(p.to.name);
+	    List<Key> newRobots = new ArrayList<>();
+	    for (var robot : robots) {
+		if (robot.name.equals(p.from.name)) {
+		    newRobots.add(p.to);
+		} else {
+		    newRobots.add(robot);
+		}
+	    }
+	    int l = findShortestPathLength2(v, newRobots, newPossessedKeys, cost + p.distance);
+
+	    shortest = Math.min(l, shortest);
+	}
+	_memo.put(memoKey, shortest);
+	return shortest;
     }
 }
 
@@ -100,10 +164,10 @@ class NeptuneVault {
     private final Map<String, Door> doors = new HashMap<>();
     private final Map<String, Key> keys = new HashMap<>();
 
-    private Coord2D userStartPosition;
+    private final List<Coord2D> userStartPositions = new ArrayList<>();
     private List<Path> _cachedPaths;
 
-    public NeptuneVault(List<String> input) {
+    public NeptuneVault(List<String> input, boolean numberStartLocations) {
 	for (int r = 0; r < input.size(); r++) {
 	    String line = input.get(r);
 	    var chars = line.split("");
@@ -113,8 +177,13 @@ class NeptuneVault {
 		    maze.set(coord, chars[c]);
 		} else {
 		    if (chars[c].equals("@")) {
-			userStartPosition = coord;
-			keys.put(chars[c], new Key(chars[c], coord)); // Calling it a key for simplicity
+			userStartPositions.add(coord);
+			if (numberStartLocations) {
+			    var s = String.valueOf(userStartPositions.size());
+			    keys.put(s, new Key(s, coord)); // Calling it a key for simplicity
+			} else {
+			    keys.put(chars[c], new Key(chars[c], coord)); // Calling it a key for simplicity
+			}
 		    } else if (chars[c].equals(chars[c].toUpperCase())) {
 			doors.put(chars[c], new Door(chars[c], coord));
 		    } else {
@@ -124,7 +193,6 @@ class NeptuneVault {
 		}
 	    }
 	}
-	cachePaths();
     }
 
     public Grid2D getMaze() {
@@ -139,11 +207,10 @@ class NeptuneVault {
 	return keys;
     }
 
-    public Coord2D getUserStartPosition() {
-	return userStartPosition;
-    }
-
     public List<Path> getOpenPathsFrom(Key k, List<String> possessedKeys) {
+	if (_cachedPaths == null) {
+	    cachePaths();
+	}
 	List<Path> result = new ArrayList<>();
 	Set<String> temp = new HashSet<>(possessedKeys);
 	for (var path : _cachedPaths) {
@@ -162,13 +229,16 @@ class NeptuneVault {
 	    for (int j = i + 1; j < keyNames.size(); j++) {
 		Key k2 = keys.get(keyNames.get(j));
 		int distance = getDistance(k1.position, k2.position, null);
-		Path path = new Path(k1, k2, distance);
+		if (distance > 0) {
+		    // Part 2, some keys will not be accessible from start positions
+		    Path path = new Path(k1, k2, distance);
 
-		// Find locked doors en route
-		path.doors.addAll(getDoorsBetween(k1.position, k2.position));
-		paths.add(path);
-		var rPath = path.reversed();
-		paths.add(rPath);
+		    // Find locked doors en route
+		    path.doors.addAll(getDoorsBetween(k1.position, k2.position));
+		    paths.add(path);
+		    var rPath = path.reversed();
+		    paths.add(rPath);
+		}
 	    }
 	}
 	// Sorted by distance, ascending
@@ -176,6 +246,7 @@ class NeptuneVault {
     }
 
     private List<Door> getDoorsBetween(Coord2D from, Coord2D to) {
+	// Will only be called for coords where there is a path if doors are open
 	List<Door> result = new ArrayList<>();
 	Set<String> locked = new HashSet<>();
 	for (var doorName : getDoors().keySet()) {
@@ -245,7 +316,9 @@ class NeptuneVault {
 	for (var door : doors.values()) {
 	    overlay.put(door.position, door.name);
 	}
-	overlay.put(userStartPosition, "@");
+	for (var c : userStartPositions) {
+	    overlay.put(c, "@");
+	}
 	maze.print(overlay);
     }
 }
