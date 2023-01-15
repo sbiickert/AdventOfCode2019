@@ -194,7 +194,7 @@ public class Grid2D {
 	    for (var col = ext.getXMin(); col <= ext.getXMax(); col++) {
 		Coord2D c = new Coord2D(col, row);
 		var value = data.get(c);
-		if (overlay.containsKey(c)) {
+		if (overlay != null && overlay.containsKey(c)) {
 		    value = overlay.get(c);
 		}
 		value = (value == null) ? defaultValue : value;

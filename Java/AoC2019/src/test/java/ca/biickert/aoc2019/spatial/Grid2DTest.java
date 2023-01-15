@@ -223,7 +223,7 @@ public class Grid2DTest {
     public void testPrint_boolean() {
 	System.out.println("print");
 	boolean flipY = true;
-	testGrid.print(flipY);
+	testGrid.print(null, flipY);
     }
     
 }

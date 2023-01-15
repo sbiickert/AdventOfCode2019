@@ -47,40 +47,59 @@ public class Day18 extends Solution {
     }
 
     private String solvePartOne(NeptuneVault vault) {
-	Key start = vault.getKeys().get("@");
-	start.costToReach = 0;
 	Set<String> unvisited = new HashSet<>();
 	for (var k : vault.getKeys().keySet()) {
 	    unvisited.add(k);
+	    vault.getKeys().get(k).initCost(vault.getKeys().size());
 	}
-	
-	PriorityQueue<String> working = new PriorityQueue<String>((s1, s2) -> vault.getKeys().get(s1).costToReach - vault.getKeys().get(s2).costToReach);
-	working.add(start.name);
-	
+
+	int step = 0;
+	Key start = vault.getKeys().get("@");
+	start.setCost(step, 0);
+
+	List<Key> working = new ArrayList<>();
+	List<Key> nextStepWorking = new ArrayList<>();
+
+	working.add(start);
+
 	while (!unvisited.isEmpty()) {
-	    String currentName = working.remove();
-	    Key current = vault.getKeys().get(currentName);
+	    Key current = working.remove(0);
+
 	    Door currentDoor = vault.getDoors().get(current.getDoorName());
 	    if (currentDoor != null) {
 		currentDoor.isLocked = false;
 	    }
-	    
+
 	    List<Path> paths = vault.getOpenPathsFrom(current);
+
 	    for (var p : paths) {
-		int costTo = current.costToReach + p.distance;
-		if (p.to.costToReach > costTo) {
-		    p.to.costToReach = costTo;
-		    working.add(p.to.name);
+		if (unvisited.contains(p.to.name) == false) {
+		    continue;
+		}
+		int costTo = current.getCost(step) + p.distance;
+		if (p.to.getCost(step + 1) > costTo) {
+		    p.to.setCost(step + 1, costTo);
+		    nextStepWorking.add(p.to);
 		}
 	    }
-	    
+
 	    unvisited.remove(current.name);
+	    step++;
+
+	    if (working.isEmpty()) {
+		working = new ArrayList<>(nextStepWorking.stream().sorted(
+			(k1, k2) -> k1.getCost() - k2.getCost()
+		).toList());
+		nextStepWorking = new ArrayList<>();
+	    }
 	}
-	
-	var result = vault.getKeys().values().stream().sorted((k1,k2) -> k1.costToReach - k2.costToReach).toList();
+
+	var result = vault.getKeys().values().stream().sorted(
+		(k1, k2) -> k1.getCost() - k2.getCost()
+	).toList();
 	System.out.println(result);
-	
-	return String.valueOf(result.get(result.size()-1).costToReach);
+
+	return String.valueOf(result.get(result.size() - 1).getCost());
     }
 
     private String solvePartTwo() {
@@ -136,18 +155,7 @@ class NeptuneVault {
     public Coord2D getUserStartPosition() {
 	return userStartPosition;
     }
-    
-//    public Key getLastKey() {
-//	Set<String> keysNoDoors = new TreeSet<>();
-//	for (var keyName : keys.keySet()) {
-//	    if (keyName.equals("@") == false && doors.containsKey(keyName.toUpperCase()) == false) {
-//		keysNoDoors.add(keyName);
-//	    }
-//	}
-//	var lastKeyName = (String)keysNoDoors.toArray()[keysNoDoors.size()-1];
-//	return keys.get(lastKeyName);
-//    }
-    
+
     public List<Path> getOpenPathsFrom(Key k) {
 	List<Path> result = new ArrayList<>();
 	for (var path : _cachedPaths) {
@@ -270,9 +278,11 @@ class Door {
 
 class Key {
 
+    public static final int BIG = 999;
+
     String name;
     Coord2D position;
-    int costToReach = Integer.MAX_VALUE;
+    private List<Integer> costToReach = new ArrayList<>();
 
     public Key(String name, Coord2D position) {
 	this.name = name;
@@ -282,7 +292,29 @@ class Key {
     public String getDoorName() {
 	return name.toUpperCase();
     }
-   
+
+    public void initCost(int size) {
+	costToReach.clear();
+    }
+    
+    public int getCost() {
+	return getCost(costToReach.size()-1);
+    }
+
+    public int getCost(int step) {
+	if (step >= costToReach.size()) {
+	    return BIG;
+	}
+	return costToReach.get(step);
+    }
+
+    public void setCost(int step, int cost) {
+	while (step >= costToReach.size()) {
+	    costToReach.add(BIG);
+	}
+	costToReach.set(step, cost);
+    }
+
     @Override
     public String toString() {
 	return "Key " + name + " cost: " + costToReach;
@@ -329,11 +361,11 @@ class Path {
 	}
 	return result;
     }
-    
+
     public Path reversed() {
 	return new Path(to, from, distance);
     }
-    
+
     @Override
     public String toString() {
 	return "Path from " + from.name + " to " + to.name;
