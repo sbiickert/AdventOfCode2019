@@ -3,21 +3,17 @@ package ca.biickert.aoc2019;
 import ca.biickert.aoc2019.spatial.AdjacencyRule;
 import ca.biickert.aoc2019.spatial.Coord2D;
 import ca.biickert.aoc2019.spatial.Grid2D;
-import ca.biickert.aoc2019.util.Algorithms;
 import ca.biickert.aoc2019.util.InputReader;
 import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.TreeSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
-import java.util.TreeMap;
 
 /**
  *
@@ -47,59 +43,50 @@ public class Day18 extends Solution {
     }
 
     private String solvePartOne(NeptuneVault vault) {
-	Set<String> unvisited = new HashSet<>();
-	for (var k : vault.getKeys().keySet()) {
-	    unvisited.add(k);
-	    vault.getKeys().get(k).initCost(vault.getKeys().size());
-	}
-
-	int step = 0;
 	Key start = vault.getKeys().get("@");
-	start.setCost(step, 0);
 
-	List<Key> working = new ArrayList<>();
-	List<Key> nextStepWorking = new ArrayList<>();
+	List<String> possessedKeys = new ArrayList<>();
+	possessedKeys.add("@");
 
-	working.add(start);
+	int shortest = findShortestPathLength(vault, start, possessedKeys, 0);
 
-	while (!unvisited.isEmpty()) {
-	    Key current = working.remove(0);
+	return String.valueOf(shortest);
+    }
 
-	    Door currentDoor = vault.getDoors().get(current.getDoorName());
-	    if (currentDoor != null) {
-		currentDoor.isLocked = false;
+    private int _shortestPathLength = Key.BIG; 
+    private Map<String,Integer> _memo = new HashMap<>();
+
+    private int findShortestPathLength(NeptuneVault v, Key keyFrom, List<String> possessedKeys, int cost) {
+	String memoKey = keyFrom.name + "," + cost + "," + String.join("", possessedKeys.stream().sorted().toList());
+	if (_memo.containsKey(memoKey)) {
+	    //System.out.println(memoKey);
+	    return _memo.get(memoKey);
+	}
+	
+	List<Path> paths = v.getOpenPathsFrom(keyFrom, possessedKeys);
+	if (paths.isEmpty()) {
+	    if (cost < _shortestPathLength) {
+		System.out.println(cost + ": " + possessedKeys);
+		_shortestPathLength = cost;
 	    }
-
-	    List<Path> paths = vault.getOpenPathsFrom(current);
-
-	    for (var p : paths) {
-		if (unvisited.contains(p.to.name) == false) {
-		    continue;
-		}
-		int costTo = current.getCost(step) + p.distance;
-		if (p.to.getCost(step + 1) > costTo) {
-		    p.to.setCost(step + 1, costTo);
-		    nextStepWorking.add(p.to);
-		}
-	    }
-
-	    unvisited.remove(current.name);
-	    step++;
-
-	    if (working.isEmpty()) {
-		working = new ArrayList<>(nextStepWorking.stream().sorted(
-			(k1, k2) -> k1.getCost() - k2.getCost()
-		).toList());
-		nextStepWorking = new ArrayList<>();
-	    }
+	    return cost;
+	}
+	else if (cost >= _shortestPathLength) {
+	    _memo.put(memoKey, Key.BIG);
+	    return Key.BIG;
 	}
 
-	var result = vault.getKeys().values().stream().sorted(
-		(k1, k2) -> k1.getCost() - k2.getCost()
-	).toList();
-	System.out.println(result);
+	int shortest = Key.BIG;
+	for (var p : paths) {
+	    List<String> newPossessedKeys = new ArrayList<>(possessedKeys);
+	    newPossessedKeys.add(p.to.name);
+	    int l = findShortestPathLength(v, p.to, newPossessedKeys, cost + p.distance);
 
-	return String.valueOf(result.get(result.size() - 1).getCost());
+	    shortest = Math.min(l, shortest);
+	}
+
+	_memo.put(memoKey, shortest);
+	return shortest;
     }
 
     private String solvePartTwo() {
@@ -114,7 +101,7 @@ class NeptuneVault {
     private final Map<String, Key> keys = new HashMap<>();
 
     private Coord2D userStartPosition;
-    private List<Path> _cachedPaths = new ArrayList();
+    private List<Path> _cachedPaths;
 
     public NeptuneVault(List<String> input) {
 	for (int r = 0; r < input.size(); r++) {
@@ -156,10 +143,11 @@ class NeptuneVault {
 	return userStartPosition;
     }
 
-    public List<Path> getOpenPathsFrom(Key k) {
+    public List<Path> getOpenPathsFrom(Key k, List<String> possessedKeys) {
 	List<Path> result = new ArrayList<>();
+	Set<String> temp = new HashSet<>(possessedKeys);
 	for (var path : _cachedPaths) {
-	    if (path.from.equals(k) && path.isOpen()) {
+	    if (path.from.equals(k) && !temp.contains(path.to.name) && path.isOpen(temp)) {
 		result.add(path);
 	    }
 	}
@@ -167,6 +155,7 @@ class NeptuneVault {
     }
 
     private void cachePaths() {
+	List<Path> paths = new ArrayList<>();
 	List<String> keyNames = new ArrayList<>(keys.keySet());
 	for (int i = 0; i < keyNames.size() - 1; i++) {
 	    Key k1 = keys.get(keyNames.get(i));
@@ -177,11 +166,13 @@ class NeptuneVault {
 
 		// Find locked doors en route
 		path.doors.addAll(getDoorsBetween(k1.position, k2.position));
-		_cachedPaths.add(path);
+		paths.add(path);
 		var rPath = path.reversed();
-		_cachedPaths.add(rPath);
+		paths.add(rPath);
 	    }
 	}
+	// Sorted by distance, ascending
+	_cachedPaths = paths.stream().sorted((p1, p2) -> p1.distance - p2.distance).toList();
     }
 
     private List<Door> getDoorsBetween(Coord2D from, Coord2D to) {
@@ -263,12 +254,10 @@ class Door {
 
     String name;
     Coord2D position;
-    boolean isLocked;
 
     public Door(String name, Coord2D position) {
 	this.name = name;
 	this.position = position;
-	this.isLocked = true;
     }
 
     public String getKeyName() {
@@ -278,11 +267,10 @@ class Door {
 
 class Key {
 
-    public static final int BIG = 999;
+    public static final int BIG = 9999;
 
     String name;
     Coord2D position;
-    private List<Integer> costToReach = new ArrayList<>();
 
     public Key(String name, Coord2D position) {
 	this.name = name;
@@ -293,31 +281,9 @@ class Key {
 	return name.toUpperCase();
     }
 
-    public void initCost(int size) {
-	costToReach.clear();
-    }
-    
-    public int getCost() {
-	return getCost(costToReach.size()-1);
-    }
-
-    public int getCost(int step) {
-	if (step >= costToReach.size()) {
-	    return BIG;
-	}
-	return costToReach.get(step);
-    }
-
-    public void setCost(int step, int cost) {
-	while (step >= costToReach.size()) {
-	    costToReach.add(BIG);
-	}
-	costToReach.set(step, cost);
-    }
-
     @Override
     public String toString() {
-	return "Key " + name + " cost: " + costToReach;
+	return "Key " + name;
     }
 }
 
@@ -326,7 +292,7 @@ class Path {
     Key from;
     Key to;
     int distance;
-    List<Door> doors = new ArrayList<>();
+    Set<Door> doors = new HashSet<>();
 
     public Path(Key fromKey, Key toKey, int distance) {
 	this.from = fromKey;
@@ -351,19 +317,21 @@ class Path {
     }
 
     public List<Door> getDoors() {
-	return doors;
+	return doors.stream().toList();
     }
 
-    public boolean isOpen() {
+    public boolean isOpen(Set<String> possessedKeys) {
 	boolean result = true;
 	for (var door : doors) {
-	    result = result && door.isLocked == false;
+	    result = result && possessedKeys.contains(door.name.toLowerCase());
 	}
 	return result;
     }
 
     public Path reversed() {
-	return new Path(to, from, distance);
+	var r = new Path(to, from, distance);
+	r.doors = this.doors;
+	return r;
     }
 
     @Override
