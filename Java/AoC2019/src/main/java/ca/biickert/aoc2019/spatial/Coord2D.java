@@ -1,6 +1,7 @@
 
 package ca.biickert.aoc2019.spatial;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -90,5 +91,14 @@ public class Coord2D implements Cloneable {
     public int manhattanDistanceTo(Coord2D other) {
 	var delta = this.delta(other);
 	return Math.abs(delta.getX()) + Math.abs(delta.getY());
+    }
+    
+    public Comparator<Coord2D> readingOrder() {
+	return (c1, c2) -> {
+	    if (c1.y == c2.y) {
+		return Integer.compare(c1.x, c2.x);
+	    }
+	    return Integer.compare(c1.y, c2.y);
+	};
     }
 }
