@@ -74,7 +74,55 @@ public class Day20 extends Solution {
     }
 
     private String solvePartTwo() {
-	return "";
+	// Do a BFS of the donut, following Portals where found
+	// Tracking recursion depth
+	final int MAX_DEPTH = 200;
+	int step = 0;
+	Set<RLocation> visited = new HashSet<>();
+	List<RLocation> toVisit = new ArrayList<>();
+	toVisit.add(new RLocation(0, donut.getStart()));
+	
+	while (true) {
+	    List<RLocation> nextToVisit = new ArrayList<>();
+	    
+	    for (var rloc : toVisit) {
+		//System.out.println(rloc);
+		if (rloc.depth() > MAX_DEPTH) {
+		    return "Safety limit of " + MAX_DEPTH + " reached.";
+		}
+		if (rloc.depth() == 0 && rloc.location().equals(donut.getEnd())) {
+		    // EXIT
+		    return String.valueOf(step);
+		}
+		for (var n : donut.getMaze().getAdjacent(rloc.location())) {
+		    var nRLoc = new RLocation(rloc.depth(), n);
+		    if (visited.contains(nRLoc)) { continue; }
+		    var value = donut.getMaze().get(nRLoc.location());
+		    if (value instanceof Portal portal) {
+			if (portal.name.equals("AA")) { continue; }
+			if (portal.name.equals("ZZ")) { continue; }
+			else if (portal.isInner) {
+			    nRLoc = new RLocation(rloc.depth()+1, portal.out);
+			    // Don't backtrack into the portal
+			    visited.add(new RLocation(rloc.depth()+1, portal.opposite.in));
+			}
+			else {
+			    // Can't go to a level less than zero
+			    if (rloc.depth() < 1) { continue; }
+			    nRLoc = new RLocation(rloc.depth()-1, portal.out);
+			}
+			nextToVisit.add(nRLoc);
+		    }
+		    else if (value.equals(".")) {
+			nextToVisit.add(nRLoc);
+		    }
+		}
+		visited.add(rloc);
+	    }
+	    
+	    toVisit = nextToVisit;
+	    step++;
+	}
     }
 
 }
@@ -116,6 +164,7 @@ class Donut {
     
     private void gatherPortals() {
 	Map<String,Portal> gather = new HashMap<>();
+	var innerExt = maze.getExtent().inset(3);
 	
 	for (var coord : maze.getCoords()) {
 	    String value = (String)maze.get(coord);
@@ -142,6 +191,7 @@ class Donut {
 		if (!gather.containsKey(key)) {
 		    //System.out.println(key);
 		    var p = new Portal(key, coord, openSpace);
+		    p.isInner = innerExt.contains(coord);
 		    gather.put(key, p); // Temp, points to own open space
 		    maze.set(coord, p);
 		}
@@ -150,6 +200,9 @@ class Donut {
 		    var temp = other.out;
 		    other.out = openSpace; // Now points to the partner
 		    var p = new Portal(key, coord, temp);
+		    p.isInner = !other.isInner;
+		    p.opposite = other;
+		    other.opposite = p;
 		    //System.out.println(p.description());
 		    //System.out.println(other.description());
 		    maze.set(coord, p);
@@ -175,6 +228,8 @@ class Portal {
     String name;
     Coord2D in;
     Coord2D out;
+    Portal opposite = null;
+    boolean isInner = false;
     
     public Portal(String name, Coord2D inCoord, Coord2D outCoord) {
 	this.name = name;
@@ -193,7 +248,7 @@ class Portal {
 	return "P";
     }
     public String description() {
-	return "Portal " + name + " " + in + " -> " + out;
+	return "Portal " + name + " " + in + " " + (isInner ? "+" : "-") + " " + out;
     }
     
     @Override
@@ -204,3 +259,5 @@ class Portal {
 	return this.name.equals(that.name) && this.in.equals(that.in) && this.out.equals(that.out);
     }
 }
+
+record RLocation(int depth, Coord2D location) {}
