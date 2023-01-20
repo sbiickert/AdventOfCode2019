@@ -1,12 +1,11 @@
 package ca.biickert.aoc2019;
 
 import ca.biickert.aoc2019.util.InputReader;
+import ca.biickert.aoc2019.util.IntCodeComputer;
 import ca.biickert.aoc2019.util.Result;
 import ca.biickert.aoc2019.util.Solution;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import ca.biickert.aoc2019.util.IntCodeComputer;
 
 /**
  *
@@ -25,7 +24,7 @@ public class Day21 extends Solution {
 	List<String> input = InputReader.readGroupedInputFile(filename, index);
 
 	var part1Solution = solvePartOne(input.get(0));
-	var part2Solution = solvePartTwo();
+	var part2Solution = solvePartTwo(input.get(0));
 
 	result = new Result(part1Solution, part2Solution);
 
@@ -45,13 +44,30 @@ public class Day21 extends Solution {
 	for (var cmd : script) {
 	    bot.addScriptCommand(cmd);
 	}
-	var result = bot.go();
+	var result = bot.walk();
 
 	return String.valueOf(result);
     }
 
-    private String solvePartTwo() {
-	return "";
+    private String solvePartTwo(String intCodeProgram) {
+	// Courtesy dartcoder on Reddit
+	var script = new String[]{
+	    "NOT C J ",
+	    "AND D J ",
+	    "AND H J",
+	    "NOT B T ",
+	    "AND D T ",
+	    "OR T J",
+	    "NOT A T ",
+	    "OR T J"};
+
+	var bot = new SpringBot(intCodeProgram);
+	for (var cmd : script) {
+	    bot.addScriptCommand(cmd);
+	}
+	var result = bot.run();
+
+	return String.valueOf(result);
     }
 
 }
@@ -69,12 +85,23 @@ class SpringBot {
 	script.add(cmd);
     }
 
-    public Long go() {
+    public Long walk() {
 	for (var cmd : script) {
 	    computer.inputAscii(cmd);
 	}
 	computer.inputAscii("WALK");
+	return go();
+    }
 
+    public Long run() {
+	for (var cmd : script) {
+	    computer.inputAscii(cmd);
+	}
+	computer.inputAscii("RUN");
+	return go();
+    }
+
+    private Long go() {
 	int newLineCount = 0; // Death is followed by many newlines. Stop after 3.
 
 	while (computer.outputAscii() != null && newLineCount < 4) {
@@ -97,12 +124,12 @@ class SpringBot {
 	return computer.output;
     }
 
-    private void wait(int ms) {
-	try {
-	    Thread.sleep(ms);
-	} catch (InterruptedException ex) {
-	    Thread.currentThread().interrupt();
-	}
-    }
+//    private void wait(int ms) {
+//	try {
+//	    Thread.sleep(ms);
+//	} catch (InterruptedException ex) {
+//	    Thread.currentThread().interrupt();
+//	}
+//    }
 
 }
