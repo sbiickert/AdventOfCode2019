@@ -57,6 +57,13 @@ final public class IntCodeComputer {
 	}
     }
 
+    public String outputAscii() {
+	if (output > 255) {
+	    return null;
+	}
+	long value = output;
+	return Character.toString((char)value);
+    }
 
     public void run(boolean toOutput, boolean resetPtr) {
 	//System.out.println("Starting execute");
