@@ -64,8 +64,18 @@ final public class IntCodeComputer {
 	long value = output;
 	return Character.toString((char)value);
     }
+    
+    public Long removeOutput() {
+	Long result = output;
+	output = null;
+	return result;
+    }
 
     public void run(boolean toOutput, boolean resetPtr) {
+	this.run(false, toOutput, resetPtr);
+    }
+    
+    public void run(boolean toInput, boolean toOutput, boolean resetPtr) {
 	//System.out.println("Starting execute");
 	boolean bExit = false;
 	if (resetPtr) {
@@ -97,13 +107,14 @@ final public class IntCodeComputer {
 		case OPCODE_INPUT:
 		    outputPos = (int) getImmediateValue(ptr + 1);
 		    Long i = input.poll();
-		    try {
-			setValue(outputPos, i, opCode.get(1));
-		    } catch (NullPointerException npe) {
-			System.out.println(npe);
-			System.exit(1);
+		    if (i == null) {
+			i = -1L; // Default if no input in queue
 		    }
+		    setValue(outputPos, i, opCode.get(1));
 		    ptr += 2;
+		    if (toInput) {
+			bExit = true;
+		    }
 		    break;
 		case OPCODE_OUTPUT:
 		    output = getValue(ptr + 1, opCode.get(1));
