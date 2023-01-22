@@ -22,45 +22,71 @@ public class Day23 extends Solution {
 
 	List<String> input = InputReader.readGroupedInputFile(filename, index);
 
-	var part1Solution = solvePartOne(input.get(0));
-	var part2Solution = solvePartTwo();
+	var solution = solveParts(input.get(0));
 
-	result = new Result(part1Solution, part2Solution);
+	result = new Result(String.valueOf(solution[0]), String.valueOf(solution[1]));
 
 	return result;
     }
 
-    private String solvePartOne(String nicProgram) {
+    private Long[] solveParts(String nicProgram) {
+	Long[] results = new Long[] {null,null};
 	List<NetworkNode> nodes = new ArrayList<>();
 	for (long i = 0L; i < 50L; i++) {
 	    nodes.add(new NetworkNode(i, nicProgram));
 	}
 	
-	long result = -1L;
 	int id = 0;
+	boolean foundRepeat = false;
+	Packet natPacket = null;
+	Packet natPacketSentToZero = null;
 
-	while (result < 0L) {
+	while (!foundRepeat) {
 	    var node = nodes.get(id);
 	    node.work();
 	    while (!node.outbox.isEmpty()) {
 		var packet = node.outbox.remove();
 		if (packet.to() == 255) {
-		    result = packet.y();
-		    break;
+		    if (results[0] == null) {
+			// First packet.y sent to 255 is part 1 result
+			results[0] = packet.y();
+		    }
+		    natPacket = packet;
 		}
-		nodes.get((int)packet.to()).inbox.add(packet);
+		else {
+		    nodes.get((int)packet.to()).inbox.add(packet);
+		}
 	    }
+	    
 	    id++;
+	    
 	    if (id >= nodes.size()) {
 		id = 0;
+		// We've done a round-robin. Check for network idle.
+		if (networkIsIdle(nodes)) {
+		    //System.out.println("Sending " + natPacket + " to node 0.");
+		    nodes.get(0).inbox.add(natPacket);
+		    if (natPacketSentToZero != null && natPacketSentToZero.y() == natPacket.y()) {
+			foundRepeat = true;
+			results[1] = natPacket.y();
+		    }
+		    natPacketSentToZero = natPacket;
+		}
 	    }
 	}
 	
-	return String.valueOf(result);
+	return results;
     }
 
-    private String solvePartTwo() {
-	return "";
+    private boolean networkIsIdle(List<NetworkNode> nodes) {
+	boolean idle = true;
+	
+	for (int i = 0; i < nodes.size(); i++) {
+	    idle = idle && nodes.get(i).isIdle();
+	    if (!idle) { break; }
+	}
+	
+	return idle;
     }
 
 }
@@ -98,6 +124,10 @@ class NetworkNode {
 	    var p = new Packet(this.id, outputs.remove(0), outputs.remove(0), outputs.remove(0));
 	    outbox.add(p);
 	}
+    }
+    
+    public boolean isIdle() {
+	return inbox.isEmpty() && outbox.isEmpty() && outputs.isEmpty();
     }
 }
 

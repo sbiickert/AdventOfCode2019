@@ -252,7 +252,7 @@ final public class IntCodeComputer {
 	var state = new IntCodeComputerState(new ArrayList<>(program),
 		ptr,
 		relativeBase,
-		new ArrayList<Long>(input.stream().toList()),
+		new ArrayList<>(input.stream().toList()),
 		output,
 		isHalted);
 	return state;
