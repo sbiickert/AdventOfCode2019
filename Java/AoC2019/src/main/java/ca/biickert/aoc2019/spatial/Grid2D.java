@@ -9,7 +9,7 @@ import java.util.Map;
  *
  * @author sjb
  */
-public class Grid2D {
+public class Grid2D implements Cloneable {
 
     public static final Coord2D NORTH = new Coord2D(0, -1);
     public static final Coord2D SOUTH = new Coord2D(0, 1);
@@ -206,5 +206,15 @@ public class Grid2D {
 	    }
 	    row += step;
 	}
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+	super.clone();
+	var grid = new Grid2D(defaultValue, rule);
+	grid.data = new HashMap<>(data);
+	grid.extent = (Extent2D)extent.clone();
+	grid.offsets = new HashMap<>(offsets);
+	return grid;
     }
 }
