@@ -26,7 +26,7 @@ public class Grid2D implements Cloneable {
 
     private AdjacencyRule rule;
     private Object defaultValue;
-    private Map<Coord2D, Object> data = new HashMap<>();
+    protected Map<Coord2D, Object> data = new HashMap<>();
     private Extent2D extent = null;
     private Map<AdjacencyRule, List<Coord2D>> offsets = new HashMap<>();
 
@@ -67,6 +67,10 @@ public class Grid2D implements Cloneable {
     
     public void clearAll() {
 	data.clear();
+    }
+    
+    public Map<Coord2D, Object> getData() {
+	return new HashMap<>(data);
     }
 
     public Extent2D getExtent() {
