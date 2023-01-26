@@ -91,6 +91,7 @@ public class Grid2D implements Cloneable {
 
     public List<Coord2D> getCoordsWithValue(Object o) {
 	return getCoords().stream()
+                .filter(key -> data.get(key) != null)
 		.filter(key -> data.get(key).equals(o))
 		.toList();
     }
